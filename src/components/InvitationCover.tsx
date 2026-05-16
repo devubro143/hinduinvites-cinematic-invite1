@@ -20,12 +20,8 @@ export function InvitationCover() {
     if (opening) return;
     setOpening(true);
     document.body.style.overflow = "";
-    
-    // Broadcast event to start music/scroll engine
     window.dispatchEvent(new CustomEvent("invitation:opened"));
-    
-    // Complete the hide after panels finish moving
-    setTimeout(() => setHidden(true), 1800);
+    setTimeout(() => setHidden(true), 2000);
   };
 
   if (hidden) return null;
@@ -39,38 +35,42 @@ export function InvitationCover() {
       aria-label="Tap to open invitation"
       className="fixed inset-0 z-[100] cursor-pointer select-none overflow-hidden"
     >
-      {/* Left Panel */}
+      {/* Background Layer (for Desktop Zoom/Fade) */}
+      <div 
+        className={`absolute inset-0 z-0 bg-cinematic transition-all duration-[2000ms] ease-out ${
+          opening ? "opacity-0 scale-110 md:scale-125" : "opacity-100 scale-100"
+        }`}
+      />
+
+      {/* Left Panel (Mobile: Split / Desktop: Fade) */}
       <div
-        className="absolute inset-y-0 left-0 z-20 w-1/2 transition-transform duration-[1800ms] ease-[cubic-bezier(0.77,0,0.18,1)]"
+        className={`absolute inset-y-0 left-0 z-20 w-1/2 transition-all duration-[1800ms] ease-[cubic-bezier(0.77,0,0.18,1)] ${
+          opening ? "max-md:-translate-x-full opacity-0" : "translate-x-0 opacity-100"
+        }`}
         style={{
-          transform: opening ? "translateX(-100%)" : "translateX(0)",
           background: "linear-gradient(110deg, #0f0406 0%, #1a0608 55%, #14060a 100%)",
           borderRight: "1px solid rgba(232,192,122,0.15)",
         }}
       >
-        {/* Panel Depth Shadow */}
-        <div className={`absolute inset-0 bg-black/40 transition-opacity duration-[1800ms] ${opening ? "opacity-100" : "opacity-0"}`} />
-        
-        {/* Center Divider Detail */}
         <div className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-marigold/40 to-transparent" />
       </div>
 
-      {/* Right Panel */}
+      {/* Right Panel (Mobile: Split / Desktop: Fade) */}
       <div
-        className="absolute inset-y-0 right-0 z-20 w-1/2 transition-transform duration-[1800ms] ease-[cubic-bezier(0.77,0,0.18,1)]"
+        className={`absolute inset-y-0 right-0 z-20 w-1/2 transition-all duration-[1800ms] ease-[cubic-bezier(0.77,0,0.18,1)] ${
+          opening ? "max-md:translate-x-full opacity-0" : "translate-x-0 opacity-100"
+        }`}
         style={{
-          transform: opening ? "translateX(100%)" : "translateX(0)",
           background: "linear-gradient(250deg, #0f0406 0%, #1a0608 55%, #14060a 100%)",
           borderLeft: "1px solid rgba(232,192,122,0.15)",
         }}
       >
-        <div className={`absolute inset-0 bg-black/40 transition-opacity duration-[1800ms] ${opening ? "opacity-100" : "opacity-0"}`} />
         <div className="absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-marigold/40 to-transparent" />
       </div>
 
-      {/* Cinematic Reveal Glow (Center) */}
+      {/* Cinematic Reveal Glow */}
       <div
-        className={`pointer-events-none absolute inset-0 z-30 transition-all duration-[1200ms] ${
+        className={`pointer-events-none absolute inset-0 z-30 transition-all duration-[1500ms] ${
           opening ? "opacity-0 scale-150" : "opacity-100 scale-100"
         }`}
         style={{
@@ -88,7 +88,6 @@ export function InvitationCover() {
           transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {/* Top ornament */}
         <div className="mb-6 flex flex-col items-center gap-3">
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-marigold to-transparent" />
           <span className="text-[10px] uppercase tracking-[0.6em] text-marigold">
@@ -99,9 +98,7 @@ export function InvitationCover() {
           </span>
         </div>
 
-        {/* Frame */}
         <div className="relative rounded-[2px] px-8 py-10 sm:px-14 sm:py-14 border border-marigold/30 bg-black/10 backdrop-blur-[2px] shadow-[0_0_60px_-10px_rgba(232,192,122,0.15)]">
-          {/* Corner accents */}
           {[
             "top-0 left-0",
             "top-0 right-0 rotate-90",
@@ -143,7 +140,6 @@ export function InvitationCover() {
           </div>
         </div>
 
-        {/* Interaction Trigger */}
         <div className="mt-12 flex flex-col items-center gap-4">
           <div className="relative group">
             <div className="absolute -inset-4 bg-marigold/10 rounded-full blur-xl animate-pulse group-hover:bg-marigold/20 transition-colors" />
@@ -159,7 +155,6 @@ export function InvitationCover() {
         </div>
       </div>
 
-      {/* Floating Particles (Embers) */}
       {!isReducedMotion && !opening && (
         <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">
           {Array.from({ length: 20 }).map((_, i) => (
@@ -176,13 +171,6 @@ export function InvitationCover() {
           ))}
         </div>
       )}
-
-      <style>{`
-        @keyframes cover-pulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(232,192,122,0.45); }
-          50% { box-shadow: 0 0 0 14px rgba(232,192,122,0); }
-        }
-      `}</style>
     </div>
   );
 }
