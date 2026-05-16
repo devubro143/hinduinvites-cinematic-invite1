@@ -170,7 +170,7 @@ export const wedding = {
   // — Video — (Supports YouTube ID or local file path in public/couples/[id]/film.mp4)
   video: {
     enabled: true,
-    youtubeId: "dQw4w9WgXcQ", // leave empty if using local file
+    youtubeId: "YkjOuYP8wjc", // leave empty if using local file
     localFile: getAsset("film.mp4"),
     title: "Our Pre-Wedding Film",
   },
