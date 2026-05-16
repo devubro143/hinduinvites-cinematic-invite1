@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { wedding } from "@/config/wedding";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { CinematicImage } from "@/components/CinematicImage";
 
 export const Hero = memo(function Hero() {
   const { theme } = wedding;
@@ -12,13 +13,11 @@ export const Hero = memo(function Hero() {
     <section className="relative min-h-screen w-full overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img
+        <CinematicImage
           src={wedding.heroImage}
           alt="Bride and groom"
-          width={1080}
-          height={1920}
-          loading="eager"
-          className="h-full w-full object-cover animate-fade"
+          priority={true}
+          className="h-full w-full"
         />
         <div 
           className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-background" 

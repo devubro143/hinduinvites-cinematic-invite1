@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { wedding } from "@/config/wedding";
 import { SectionTitle } from "@/components/SectionTitle";
+import { CinematicImage } from "@/components/CinematicImage";
 
 export const Gallery = memo(function Gallery() {
   const imgs = wedding.gallery;
@@ -39,11 +40,10 @@ function MarqueeRow({ images, direction }: { images: string[]; direction: "left"
             key={i}
             className="relative h-64 w-80 shrink-0 overflow-hidden rounded-2xl shadow-soft sm:h-80 sm:w-96"
           >
-            <img
+            <CinematicImage
               src={src}
               alt={`Gallery moment ${i + 1}`}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-[1500ms] hover:scale-105"
+              className="h-full w-full hover:scale-105 transition-transform duration-[1500ms]"
             />
             <div className="absolute inset-0 ring-1 ring-inset ring-accent/20" />
           </figure>
