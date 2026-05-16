@@ -73,6 +73,15 @@ export const Hero = memo(function Hero() {
           {wedding.tagline}
         </p>
 
+        {/* Days to Go Badge */}
+        <div className="animate-reveal delay-4 mt-8 flex items-center gap-3">
+          <div className="h-px w-6 bg-marigold/30" />
+          <span className="text-[10px] uppercase tracking-[0.6em] text-marigold">
+            {Math.max(0, Math.floor((new Date(wedding.weddingDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} Days to Go
+          </span>
+          <div className="h-px w-6 bg-marigold/30" />
+        </div>
+
         <div className="animate-reveal delay-4 mt-10 flex flex-col items-center gap-2">
           <span className="text-xs uppercase tracking-[0.4em]" style={{ color: "var(--marigold)" }}>
             Save the Date
