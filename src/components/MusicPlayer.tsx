@@ -117,6 +117,29 @@ export function MusicPlayer() {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [hasOpened, isMuted, music.defaultVolume]);
 
+  // 4. Handle External Audio Requests (e.g., from Video Premiere)
+  useEffect(() => {
+    const handleRequestPause = () => {
+      if (!audioRef.current || !hasOpened) return;
+      fadeOut(() => setIsPlaying(false));
+    };
+
+    const handleRequestResume = () => {
+      if (!audioRef.current || !hasOpened || isMuted) return;
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+        fadeIn();
+      }).catch(() => {});
+    };
+
+    window.addEventListener("music:request-pause", handleRequestPause);
+    window.addEventListener("music:request-resume", handleRequestResume);
+    return () => {
+      window.removeEventListener("music:request-pause", handleRequestPause);
+      window.removeEventListener("music:request-resume", handleRequestResume);
+    };
+  }, [hasOpened, isMuted, music.defaultVolume]);
+
   const toggleMute = () => {
     if (!audioRef.current) return;
     
