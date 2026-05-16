@@ -17,7 +17,7 @@ const getAsset = (path: string | undefined) => {
   if (!path) return "";
   // If path is already absolute (starts with http or /), return as is
   if (path.startsWith("http") || path.startsWith("/")) return path;
-  return `/clients/${coupleId}/${path}`;
+  return `/media/${coupleId}/${path}`;
 };
 
 export type WeddingEvent = {
