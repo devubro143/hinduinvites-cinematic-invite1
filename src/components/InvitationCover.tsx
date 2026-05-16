@@ -31,12 +31,8 @@ export function InvitationCover() {
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      onClick={handleOpen}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleOpen()}
-      aria-label="Tap to open invitation"
-      className="fixed inset-0 z-[100] cursor-pointer select-none overflow-hidden"
+      aria-label="Wedding invitation cover"
+      className="fixed inset-0 z-[100] select-none overflow-hidden"
     >
       {/* Background Layer (for Desktop Zoom/Fade) */}
       <div 
