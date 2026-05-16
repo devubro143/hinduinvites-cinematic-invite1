@@ -183,6 +183,26 @@
     content: ""; height: 1px; flex: 1; max-width: 6rem;
     background: linear-gradient(90deg, transparent, var(--marigold), transparent);
   }
+
+  .bg-cinematic {
+    background: radial-gradient(circle at center, #1a0608 0%, #08030a 100%);
+  }
+
+  .bg-cinematic-deep {
+    background: linear-gradient(135deg, #08030a 0%, #1a0608 50%, #08030a 100%);
+  }
+
+  .text-premium-gold {
+    color: var(--marigold);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  }
+
+  .divider-premium {
+    background: linear-gradient(90deg, transparent, var(--marigold), transparent);
+    height: 1px;
+    width: 100%;
+    opacity: 0.4;
+  }
 }
 
 /* Cinematic keyframes */

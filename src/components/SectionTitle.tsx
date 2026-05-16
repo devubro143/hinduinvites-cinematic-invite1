@@ -14,7 +14,7 @@ export function SectionTitle({
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-4xl text-foreground sm:text-5xl md:text-6xl text-balance">
+      <h2 className="font-display text-4xl text-premium-gold sm:text-5xl md:text-6xl text-balance">
         {title}
       </h2>
       <div className="divider-ornament my-6">

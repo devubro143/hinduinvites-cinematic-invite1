@@ -35,14 +35,9 @@ export function Countdown() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-[#08030a] px-6 py-24 sm:py-32">
+    <section className="relative overflow-hidden bg-cinematic-deep px-6 py-24 sm:py-32">
       {/* Cinematic Background Atmosphere */}
-      <div 
-        className="absolute inset-0 opacity-40"
-        style={{
-          background: "radial-gradient(circle at 50% 50%, var(--maroon-deep) 0%, transparent 70%)"
-        }}
-      />
+      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_50%_50%,var(--maroon-deep)_0%,transparent_70%)]" />
       
       {/* Floating Petals / Particles */}
       {!isReducedMotion && (
@@ -66,7 +61,7 @@ export function Countdown() {
         <p className="text-[10px] uppercase tracking-[0.5em] text-marigold opacity-60">
           Until Forever
         </p>
-        <h2 className="mt-6 font-display text-5xl text-ivory sm:text-7xl">
+        <h2 className="mt-6 font-display text-5xl text-ivory sm:text-7xl text-premium-gold">
           The Countdown
         </h2>
         

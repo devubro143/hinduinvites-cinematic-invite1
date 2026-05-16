@@ -56,8 +56,7 @@ export const Hero = memo(function Hero() {
         </div>
 
         <h1
-          className="animate-reveal delay-2 font-display text-6xl leading-[0.95] sm:text-7xl md:text-8xl lg:text-9xl text-balance"
-          style={{ color: "var(--ivory)" }}
+          className="animate-reveal delay-2 font-display text-6xl leading-[0.95] sm:text-7xl md:text-8xl lg:text-9xl text-balance text-premium-gold"
         >
           {wedding.brideName}
           <span className="mx-4 inline-block italic text-accent" style={{ color: "var(--marigold)" }}>
