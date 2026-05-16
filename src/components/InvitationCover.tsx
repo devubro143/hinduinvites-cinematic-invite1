@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { wedding } from "@/config/wedding";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { ScratchReveal } from "./ScratchReveal";
 
 export function InvitationCover() {
   const isReducedMotion = useReducedMotion();
@@ -140,15 +141,14 @@ export function InvitationCover() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4">
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-marigold/10 rounded-full blur-xl animate-pulse group-hover:bg-marigold/20 transition-colors" />
-            <span className="relative inline-flex items-center gap-4 rounded-full border border-marigold/40 bg-white/5 px-8 py-3 text-[10px] uppercase tracking-[0.4em] text-ivory backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-marigold animate-pulse" />
-              Tap to Unveil the Celebration
-              <span className="h-1.5 w-1.5 rounded-full bg-marigold animate-pulse" />
-            </span>
+        {/* Sacred Interaction System */}
+        {!opening && (
+          <div className="mt-12">
+            <ScratchReveal onReveal={handleOpen} width={200} height={200} />
           </div>
+        )}
+
+        <div className={`mt-6 flex flex-col items-center transition-opacity duration-1000 ${opening ? "opacity-0" : "opacity-100"}`}>
           <span className="text-[9px] tracking-[0.4em] text-ivory/40 uppercase">
             {wedding.hashtag}
           </span>
