@@ -1,8 +1,8 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
 @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fira+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Montserrat:wght@300;400;500;600&family=Rochester&family=Quicksand:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
+@source "../src";
 @custom-variant dark (&:is(.dark *));
 
 /* HinduInvites — Ivory & Marigold luxury wedding design system */
@@ -31,6 +31,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-marigold: var(--marigold);
   --color-maroon: var(--maroon);
+  --color-maroon-deep: var(--maroon-deep);
   --color-ivory: var(--ivory);
   --color-gold: var(--gold);
   --color-destructive: var(--destructive);
