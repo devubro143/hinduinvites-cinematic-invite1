@@ -10,6 +10,7 @@ import {
 import { wedding } from "@/config/wedding";
 import { ThemeInjector } from "@/components/ThemeInjector";
 import { CinematicLoader } from "@/components/CinematicLoader";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 function NotFoundComponent() {
   return (
@@ -100,9 +101,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <HeadContent />
-      <CinematicLoader />
-      <ThemeInjector />
-      <Outlet />
+      <SmoothScroll>
+        <CinematicLoader />
+        <ThemeInjector />
+        <Outlet />
+      </SmoothScroll>
     </QueryClientProvider>
   );
 }
