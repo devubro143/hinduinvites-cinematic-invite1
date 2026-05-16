@@ -14,13 +14,12 @@ export function Video() {
   const { video } = wedding;
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [apiReady, setApiReady] = useState(false);
   
+  // Load YouTube API in background
   useEffect(() => {
     if (!video.enabled || !video.youtubeId) return;
 
-    // Load YouTube API
     if (!window.YT) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
@@ -35,39 +34,37 @@ export function Video() {
     }
   }, [video.enabled, video.youtubeId]);
 
-  const initYoutubePlayer = () => {
-    if (!window.YT || !apiReady) return;
+  // Handle state tracking once iframe is present
+  useEffect(() => {
+    if (isPlaying && apiReady && video.youtubeId && !playerRef.current) {
+      const initPlayer = () => {
+        try {
+          playerRef.current = new window.YT.Player("youtube-player-iframe", {
+            events: {
+              onStateChange: (event: any) => {
+                if (event.data === 1) { // Playing
+                  window.dispatchEvent(new CustomEvent("music:request-pause"));
+                } else if (event.data === 2 || event.data === 0) { // Paused or Ended
+                  window.dispatchEvent(new CustomEvent("music:request-resume"));
+                }
+              },
+            },
+          });
+        } catch (e) {
+          console.warn("YT API Init Error:", e);
+        }
+      };
 
-    playerRef.current = new window.YT.Player("youtube-player", {
-      videoId: video.youtubeId,
-      playerVars: {
-        autoplay: 1,
-        rel: 0,
-        modestbranding: 1,
-      },
-      events: {
-        onStateChange: (event: any) => {
-          // YT.PlayerState.PLAYING = 1
-          // YT.PlayerState.PAUSED = 2
-          // YT.PlayerState.ENDED = 0
-          if (event.data === 1) {
-            window.dispatchEvent(new CustomEvent("music:request-pause"));
-          } else if (event.data === 2 || event.data === 0) {
-            window.dispatchEvent(new CustomEvent("music:request-resume"));
-          }
-        },
-      },
-    });
-  };
+      // Slight delay to ensure iframe is in DOM
+      const timer = setTimeout(initPlayer, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isPlaying, apiReady, video.youtubeId]);
 
   const handlePlay = () => {
     setIsPlaying(true);
+    // Immediate feedback for ambient music
     window.dispatchEvent(new CustomEvent("music:request-pause"));
-    
-    if (video.youtubeId) {
-      // Give the DOM a moment to render the container
-      setTimeout(initYoutubePlayer, 100);
-    }
   };
 
   if (!video.enabled) return null;
@@ -85,7 +82,7 @@ export function Video() {
 
         <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_0_80px_-20px_rgba(0,0,0,0.8)]">
           {!isPlaying ? (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
+            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center">
               <img
                 src={wedding.heroImage}
                 alt={video.title}
@@ -95,7 +92,7 @@ export function Video() {
               
               <button
                 onClick={handlePlay}
-                className="group/play relative flex h-24 w-24 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-500 hover:scale-110 hover:bg-white/20 active:scale-95"
+                className="group/play relative z-40 flex h-24 w-24 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-500 hover:scale-110 hover:bg-white/20 active:scale-95"
               >
                 <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping opacity-0 group-hover/play:opacity-100 transition-opacity" />
                 <Play className="h-10 w-10 text-ivory fill-ivory translate-x-1 transition-transform group-hover/play:scale-110" />
@@ -114,12 +111,20 @@ export function Video() {
           ) : (
             <div className="animate-fade h-full w-full">
               {video.youtubeId ? (
-                <div id="youtube-player" className="h-full w-full" />
+                <iframe
+                  id="youtube-player-iframe"
+                  className="absolute inset-0 h-full w-full border-0"
+                  src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               ) : video.localFile ? (
                 <video
                   className="absolute inset-0 h-full w-full object-cover"
                   controls
                   autoPlay
+                  playsInline
                   poster={wedding.heroImage}
                   onPlay={() => window.dispatchEvent(new CustomEvent("music:request-pause"))}
                   onPause={() => window.dispatchEvent(new CustomEvent("music:request-resume"))}
