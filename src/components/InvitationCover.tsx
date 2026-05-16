@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { wedding } from "@/config/wedding";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ScratchReveal } from "./ScratchReveal";
+import { useInvitationParams } from "@/hooks/useInvitationParams";
 
 export function InvitationCover() {
+  const { guest, side } = useInvitationParams();
   const isReducedMotion = useReducedMotion();
   const [opening, setOpening] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -111,6 +113,21 @@ export function InvitationCover() {
               className={`absolute h-4 w-4 ${pos} border-t border-l border-marigold/60 m-[-1px]`}
             />
           ))}
+
+          {/* Guest Personalization */}
+          {guest && (
+            <div className="mb-6 animate-reveal">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-marigold/60">
+                {side === "bride" ? "From the Bride's Family" : side === "groom" ? "From the Groom's Family" : "A Special Invitation for"}
+              </p>
+              <h2 className="mt-2 font-display text-2xl text-premium-gold italic">
+                {guest.includes("&") || guest.toLowerCase().includes("family") ? `Dear ${guest}` : `Welcome ${guest}`}
+              </h2>
+              <div className="mt-4 flex justify-center">
+                <div className="h-px w-8 bg-gradient-to-r from-transparent via-marigold/40 to-transparent" />
+              </div>
+            </div>
+          )}
 
           <p className="text-[10px] uppercase tracking-[0.6em] text-marigold opacity-80">
             The Wedding of
