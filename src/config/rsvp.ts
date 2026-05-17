@@ -43,6 +43,11 @@ export interface RSVPConfig {
   };
 
   /**
+   * The message shown when the submission fails.
+   */
+  errorMessage?: string;
+
+  /**
    * Cinematic premium loading messages to cycle through during AJAX submission.
    */
   loadingMessages: string[];
@@ -108,6 +113,7 @@ export const rsvpConfig: RSVPConfig = {
     title: "Thank you, {name}",
     description: "Your blessings have reached us. We are absolutely thrilled to celebrate these sacred moments with you."
   },
+  errorMessage: "Unable to send blessings right now.",
   loadingMessages: [
     "Sending blessings to the cloud...",
     "Securing your seats at the mandap...",

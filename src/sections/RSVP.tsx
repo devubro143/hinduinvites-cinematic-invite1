@@ -12,7 +12,7 @@ const buttonLoadingPhrases = [
 
 export function RSVP() {
   const [config, setConfig] = useState<RSVPConfig | null>(null);
-  const [submissionStep, setSubmissionStep] = useState<"idle" | "submitting" | "confirmed">("idle");
+  const [submissionStep, setSubmissionStep] = useState<"idle" | "submitting" | "confirmed" | "error">("idle");
   const [loadingIndex, setLoadingIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", count: 1, message: "" });
@@ -128,20 +128,18 @@ export function RSVP() {
       let isAppsScriptSuccess = false;
       const isPlaceholder = config.appsScriptUrl.includes("RsvpPlaceholder");
 
-      // 1. Submit to Google Apps Script Web App (if URL is set and not a placeholder)
+      // 1. Submit to Google Apps Script Web App using exact JSON body requested (Step 2)
       if (config.appsScriptUrl && !isPlaceholder) {
-        const formData = new URLSearchParams();
-        Object.entries(payload).forEach(([key, val]) => {
-          formData.append(key, String(val));
-        });
-
         await fetch(config.appsScriptUrl, {
           method: "POST",
-          mode: "no-cors",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
-          body: formData.toString(),
+          body: JSON.stringify({
+            guestName: form.name,
+            guestsCount: form.count,
+            message: form.message,
+          }),
         });
         isAppsScriptSuccess = true;
       }
@@ -185,11 +183,20 @@ export function RSVP() {
 
       // Let the luxury loading sequences and golden environments breathe deeply
       await new Promise((resolve) => setTimeout(resolve, 3200));
+
+      // Step 6: Clean form reset logic
+      setForm({
+        name: "",
+        count: config?.guestLimit?.default ?? 1,
+        message: ""
+      });
+
       setSubmissionStep("confirmed");
     } catch (err: any) {
       console.error("RSVP Submission failed:", err);
-      setError("We encountered a brief network hiccup. Please try submitting again, or reach out to us directly.");
-      setSubmissionStep("idle");
+      // Step 5: Elegant subtle error state from config or template fallback
+      setError(config?.errorMessage || "Unable to send blessings right now.");
+      setSubmissionStep("error");
     }
   };
 
@@ -370,8 +377,8 @@ export function RSVP() {
         <div 
           className="mx-auto mt-12 max-w-xl rounded-3xl border bg-gradient-to-b from-maroon-deep/20 to-black/65 p-8 shadow-elegant sm:p-10 backdrop-blur-md transition-all duration-1000 ease-out hover:border-marigold/35 relative overflow-hidden"
           style={{
-            borderColor: (submissionStep === "submitting" || submissionStep === "confirmed") ? "rgba(232, 192, 122, 0.45)" : "rgba(232, 192, 122, 0.2)",
-            boxShadow: (submissionStep === "submitting" || submissionStep === "confirmed") ? "0 25px 60px rgba(92, 32, 24, 0.45), 0 0 35px rgba(232, 192, 122, 0.2)" : "var(--shadow-elegant)",
+            borderColor: (submissionStep === "submitting" || submissionStep === "confirmed") ? "rgba(232, 192, 122, 0.45)" : (submissionStep === "error") ? "rgba(239, 68, 68, 0.35)" : "rgba(232, 192, 122, 0.2)",
+            boxShadow: (submissionStep === "submitting" || submissionStep === "confirmed") ? "0 25px 60px rgba(92, 32, 24, 0.45), 0 0 35px rgba(232, 192, 122, 0.2)" : (submissionStep === "error") ? "0 20px 50px rgba(239, 68, 68, 0.15)" : "var(--shadow-elegant)",
           }}
         >
           {submissionStep === "confirmed" ? (
@@ -417,6 +424,37 @@ export function RSVP() {
               
               <div className="divider-ornament opacity-40 max-w-[150px] mx-auto mt-4" />
             </div>
+          ) : submissionStep === "error" ? (
+            /* Step 5: Elegant subtle error state screen */
+            <div className="text-center py-8 space-y-6 cinematic-reveal-slow relative z-10 animate-reveal">
+              <div 
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-red-500/25 bg-red-950/20 text-red-400 mb-2 relative z-10"
+                style={{
+                  filter: "drop-shadow(0 0 15px rgba(239, 68, 68, 0.25))"
+                }}
+              >
+                <Heart className="h-9 w-9 text-red-400/80 fill-red-950/40" />
+              </div>
+              
+              <h3 className="font-display text-2xl leading-relaxed text-slate-100 px-2">
+                Unable to send blessings right now
+              </h3>
+              
+              <p className="text-sm text-ivory/80 leading-relaxed max-w-sm mx-auto font-body italic tracking-wide px-4">
+                We encountered a brief network hiccup. Please try sending your blessings again.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setError(null);
+                  setSubmissionStep("idle");
+                }}
+                className="mx-auto block px-8 py-3.5 rounded-full border border-marigold/30 text-xs uppercase tracking-[0.25em] text-marigold bg-maroon-deep/30 hover:bg-maroon-deep/50 hover:border-marigold hover:shadow-[0_0_20px_rgba(232,192,122,0.2)] transition-all duration-300 active:scale-95 font-semibold"
+              >
+                Retry Sending
+              </button>
+            </div>
           ) : (
             <form 
               onSubmit={handleSubmit} 
@@ -461,7 +499,7 @@ export function RSVP() {
               </Field>
 
               {error && (
-                <div className="text-center p-3 rounded-lg border border-red-500/30 bg-red-950/20 text-red-200/90 text-xs font-sans tracking-wide">
+                <div className="text-center p-3 rounded-lg border border-red-500/30 bg-red-950/20 text-red-200/90 text-xs font-sans tracking-wide animate-reveal">
                   {error}
                 </div>
               )}
@@ -533,5 +571,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
-
-
