@@ -44,6 +44,14 @@ export function InvitationCover() {
     if (opening) return;
     setOpening(true);
     document.body.style.overflow = "";
+
+    // Force scrolling reset to absolute top of the viewport (Hero section)
+    window.scrollTo(0, 0);
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+
     window.dispatchEvent(new CustomEvent("invitation:opened"));
     setTimeout(() => setHidden(true), 2000);
   };
@@ -79,6 +87,82 @@ export function InvitationCover() {
           opening ? "opacity-0 scale-110 md:scale-125" : "opacity-100 scale-100"
         }`}
       />
+
+      {/* Cinematic Golden Celebration Animation System */}
+      {opening && !isReducedMotion && (
+        <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden mix-blend-screen">
+          
+          {/* 1. Central Sacred Golden Burst */}
+          <div 
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full animate-gold-burst"
+            style={{
+              background: "radial-gradient(circle, rgba(252, 211, 77, 0.95) 0%, rgba(212, 175, 55, 0.4) 40%, rgba(138, 3, 20, 0.15) 70%, transparent 100%)",
+              width: "350px",
+              height: "350px",
+            }}
+          />
+
+          {/* 2. Layered Rocket Trails Launching Upward */}
+          {Array.from({ length: 6 }).map((_, i) => {
+            const delay = 0.2 + i * 0.12;
+            const left = 15 + i * 14 + Math.random() * 5;
+            const duration = 0.8 + Math.random() * 0.4;
+            return (
+              <div
+                key={`rocket-${i}`}
+                className="absolute bottom-0 w-1.5 rounded-full bg-gradient-to-t from-transparent via-marigold to-premium-gold animate-rocket-trail"
+                style={{
+                  left: `${left}%`,
+                  height: "120px",
+                  animationDelay: `${delay}s`,
+                  animationDuration: `${duration}s`,
+                }}
+              />
+            );
+          })}
+
+          {/* 3. Soft Fireworks Bloom Sparkles */}
+          {Array.from({ length: 4 }).map((_, i) => {
+            const delay = 0.5 + i * 0.18;
+            const left = 20 + i * 20 + Math.random() * 8;
+            const top = 20 + Math.random() * 20;
+            return (
+              <div
+                key={`bloom-${i}`}
+                className="absolute rounded-full animate-firework-bloom"
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  width: "250px",
+                  height: "250px",
+                  background: "radial-gradient(circle, rgba(250, 246, 239, 0.9) 0%, rgba(232, 192, 122, 0.5) 30%, rgba(138, 3, 20, 0.15) 60%, transparent 100%)",
+                  animationDelay: `${delay}s`,
+                }}
+              />
+            );
+          })}
+
+          {/* 4. Tiny Sparkling Drifting Golden Dust */}
+          {Array.from({ length: 25 }).map((_, i) => {
+            const delay = Math.random() * 1.5;
+            const duration = 1.2 + Math.random() * 1.0;
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            return (
+              <div
+                key={`sparkle-${i}`}
+                className="absolute w-1 h-1 rounded-full bg-accent/80 animate-sparkle-dust"
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  animationDelay: `${delay}s`,
+                  animationDuration: `${duration}s`,
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {/* Left Panel (Mobile: Split / Desktop: Fade) */}
       <div
