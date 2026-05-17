@@ -436,6 +436,17 @@ export function RSVP() {
         .animate-textarea-glow {
           animation: textarea-glow-pulse 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
+        @keyframes active-celebration-pulse {
+          0%, 100% {
+            box-shadow: 0 0 15px rgba(232, 192, 122, 0.15), border-color: rgba(232, 192, 122, 0.25);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(232, 192, 122, 0.45), border-color: rgba(232, 192, 122, 0.65);
+          }
+        }
+        .animate-celebration-pulse {
+          animation: active-celebration-pulse 2.2s ease-in-out infinite;
+        }
         
         @media (prefers-reduced-motion: reduce) {
           .animate-gold-burst, .luxury-shimmer-text, .cinematic-reveal-slow, span[style*="animation"] {
@@ -443,6 +454,9 @@ export function RSVP() {
             transition: none !important;
             transform: none !important;
             opacity: 1 !important;
+          }
+          .animate-celebration-pulse {
+            animation: none !important;
           }
         }
       `}} />
@@ -697,44 +711,84 @@ export function RSVP() {
                           };
                         });
                       }}
-                      className={`w-full rounded-lg border py-2.5 px-4 text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-between ${
+                      className={`w-full rounded-xl border py-3 px-5 text-[10px] sm:text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-between overflow-hidden relative group active:scale-[0.98] ${
                         form.attendingAllEvents
-                          ? "bg-marigold/10 border-marigold text-marigold shadow-[0_0_12px_rgba(232,192,122,0.15)] font-semibold"
-                          : "bg-[#0c040d]/50 border-marigold/20 text-slate-300 hover:border-marigold/50"
+                          ? "bg-gradient-to-r from-maroon-deep via-accent to-maroon-deep border-marigold text-ivory shadow-[0_0_22px_rgba(232,192,122,0.3)] font-bold animate-celebration-pulse"
+                          : "bg-[#0c040d]/60 border-marigold/20 text-slate-300 hover:border-marigold/50 hover:bg-black/50"
                       }`}
                     >
-                      <span>✨ Attending All Celebrations</span>
-                      <span className="text-[10px] tracking-widest opacity-80">
-                        {form.attendingAllEvents ? "ACTIVE" : "SELECTIVE"}
+                      {form.attendingAllEvents && (
+                        <>
+                          <div className="absolute inset-0 bg-marigold/[0.04] pointer-events-none" />
+                          <div 
+                            className="absolute top-0 left-0 w-[50%] h-full pointer-events-none"
+                            style={{
+                              background: "linear-gradient(90deg, transparent, rgba(250, 246, 239, 0.25), transparent)",
+                              animation: "button-sweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+                            }}
+                          />
+                        </>
+                      )}
+                      
+                      <span className="relative z-10 flex items-center gap-1.5">
+                        <span>✨</span>
+                        <span>Attending All Celebrations</span>
+                      </span>
+                      <span className="text-[10px] tracking-widest opacity-80 relative z-10 bg-black/40 px-2 py-0.5 rounded-md border border-marigold/10">
+                        {form.attendingAllEvents ? "ROYAL ACCEPTED" : "SELECT DAYS"}
                       </span>
                     </button>
                   </label>
 
-                  {/* 2-column event responsive chips */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {wedding.events.map((e: any) => {
+                  {/* 2-column event responsive cards */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {wedding.events.map((e: any, idx: number) => {
                       const isSelected = form.selectedEvents.includes(e.id);
                       return (
                         <button
                           key={e.id}
                           type="button"
                           onClick={() => handleEventChipToggle(e.id)}
-                          className={`relative rounded-full py-2.5 px-3 text-[9px] sm:text-[10px] uppercase tracking-widest border transition-all duration-300 overflow-hidden active:scale-95 ${
+                          className={`relative rounded-xl py-3.5 px-4 text-[9px] sm:text-[10px] uppercase tracking-widest border transition-all duration-500 overflow-hidden active:scale-[0.97] backdrop-blur-md group ${
                             isSelected
-                              ? "bg-gradient-to-r from-maroon-deep to-accent/90 border-marigold text-ivory shadow-[0_0_10px_rgba(232,192,122,0.15)] font-semibold"
-                              : "bg-[#0c040d]/40 border-marigold/10 text-slate-400 hover:border-marigold/30 hover:text-slate-200"
+                              ? "bg-gradient-to-br from-maroon-deep via-[#580c1f] to-accent/95 border-marigold text-ivory shadow-[0_6px_20px_rgba(232,192,122,0.22),inset_0_0_12px_rgba(232,192,122,0.2)] font-bold scale-[1.02] z-10"
+                              : "bg-gradient-to-br from-[#120305]/80 to-[#22070a]/90 border-marigold/15 text-slate-400 hover:border-marigold/45 hover:text-slate-200 hover:scale-[1.01]"
                           }`}
                         >
-                          <span className="relative z-10 flex items-center justify-center gap-1">
+                          {/* Ambient radial glow behind selected chip */}
+                          {isSelected && (
+                            <div 
+                              className="absolute inset-0 opacity-30 pointer-events-none rounded-xl"
+                              style={{
+                                background: "radial-gradient(circle at center, rgba(232, 192, 122, 0.4) 0%, transparent 75%)"
+                              }}
+                            />
+                          )}
+
+                          {/* Hover spotlight micro interaction overlay */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-transparent via-marigold/30 to-transparent" />
+
+                          {/* Dynamic golden floating ping sparkle pin */}
+                          {isSelected && (
+                            <span className="absolute top-1.5 right-1.5 flex h-1.5 w-1.5 pointer-events-none">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-marigold opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-300"></span>
+                            </span>
+                          )}
+
+                          <span className="relative z-10 flex items-center justify-center gap-1.5">
                             <span>{e.icon}</span>
                             <span>{e.title}</span>
                           </span>
+
+                          {/* Continuous or sequential sweep travel shimmer */}
                           {isSelected && (
                             <div 
                               className="absolute top-0 left-0 w-[50%] h-full pointer-events-none"
                               style={{
-                                background: "linear-gradient(90deg, transparent, rgba(232, 192, 122, 0.15), transparent)",
-                                animation: "button-sweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+                                background: "linear-gradient(90deg, transparent, rgba(250, 246, 239, 0.2), transparent)",
+                                animation: "button-sweep 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+                                animationDelay: `${idx * 180}ms`
                               }}
                             />
                           )}
