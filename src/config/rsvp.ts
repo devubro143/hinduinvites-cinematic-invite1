@@ -95,8 +95,8 @@ export interface RSVPConfig {
 
 export const rsvpConfig: RSVPConfig = {
   enabled: true,
-  // Insert your deployed Google Apps Script Web App URL here
-  appsScriptUrl: "https://script.google.com/macros/s/AKfycbwXj15C6smbhQHao2Ei0rGLhKVKLgcW5KDJibr252kr4mWBcNpb-1gAglVtHGU61-mUYg/exec",
+  // Google Apps Script Web App URL loaded securely from Vercel/Local Environment Variables
+  appsScriptUrl: import.meta.env.VITE_APPS_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbwXj15C6smbhQHao2Ei0rGLhKVKLgcW5KDJibr252kr4mWBcNpb-1gAglVtHGU61-mUYg/exec",
   labels: {
     eyebrow: "RSVP",
     title: "Will you join us?",
@@ -126,14 +126,14 @@ export const rsvpConfig: RSVPConfig = {
     default: 1
   },
   telegram: {
-    enabled: false,
-    botToken: "YOUR_TELEGRAM_BOT_TOKEN",
-    chatId: "YOUR_TELEGRAM_CHAT_ID",
+    enabled: !!(import.meta.env.VITE_TELEGRAM_BOT_TOKEN && import.meta.env.VITE_TELEGRAM_BOT_TOKEN !== "YOUR_TELEGRAM_BOT_TOKEN"),
+    botToken: import.meta.env.VITE_TELEGRAM_BOT_TOKEN || "YOUR_TELEGRAM_BOT_TOKEN",
+    chatId: import.meta.env.VITE_TELEGRAM_CHAT_ID || "YOUR_TELEGRAM_CHAT_ID",
     customMessageTemplate: "✨ *New RSVP Received* ✨\n\n👤 *Name:* {name}\n👥 *Guests:* {count}\n💌 *Message:* {message}\n\n💖 Sent with love from the Wedding Portal"
   },
   googleSheet: {
-    enabled: false,
-    spreadsheetId: "YOUR_SPREADSHEET_ID",
+    enabled: !!(import.meta.env.VITE_GOOGLE_SPREADSHEET_ID && import.meta.env.VITE_GOOGLE_SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID"),
+    spreadsheetId: import.meta.env.VITE_GOOGLE_SPREADSHEET_ID || "YOUR_SPREADSHEET_ID",
     sheetName: "RSVP Responses"
   },
   analytics: {
