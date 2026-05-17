@@ -396,5 +396,60 @@
   left: 125%;
 }
 
+/* Elite Royal Glowing & Shimmering Animations */
+@keyframes royal-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(232, 192, 122, 0.2), inset 0 0 12px rgba(250, 246, 239, 0.05);
+    border-color: rgba(232, 192, 122, 0.55);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(232, 192, 122, 0.65), inset 0 0 20px rgba(250, 246, 239, 0.15);
+    border-color: rgba(232, 192, 122, 0.95);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes royal-auto-shimmer {
+  0% {
+    left: -150%;
+  }
+  40% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.btn-royal-flashy {
+  position: relative;
+  overflow: hidden;
+  animation: royal-glow-pulse 3s infinite ease-in-out;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.btn-royal-flashy::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 30%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  transform: skewX(-25deg);
+  animation: royal-auto-shimmer 4.5s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.btn-royal-flashy:hover {
+  transform: scale(1.05) translateY(-2px) !important;
+}
+
 
 

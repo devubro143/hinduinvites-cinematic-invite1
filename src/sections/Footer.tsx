@@ -153,9 +153,16 @@ export function Footer() {
         <div className="flex flex-col items-center justify-center text-center">
           {/* Brand Signature Title (High Fashion style logo) */}
           <div className="animate-reveal delay-5 flex flex-col items-center">
-            <span className="font-display text-2xl sm:text-3.5xl tracking-[0.35em] text-royal-gold select-none font-serif opacity-95">
+            <a
+              href="https://hinduinvites.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display text-2xl sm:text-3.5xl tracking-[0.35em] text-royal-gold font-serif opacity-95 transition-all duration-500 hover:scale-103 hover:text-marigold hover:drop-shadow-[0_0_15px_rgba(232,192,122,0.65)] hover:opacity-100 relative group py-1"
+            >
               HINDUINVITES
-            </span>
+              {/* Elegant golden underline slide */}
+              <span className="absolute bottom-[-1px] left-1/2 -translate-x-1/2 w-0 h-[0.5px] bg-gradient-to-r from-transparent via-marigold to-transparent transition-all duration-700 group-hover:w-[90%]" />
+            </a>
             
             {/* Atelier Positioning Subtitle */}
             <span className="text-[8px] sm:text-[9.5px] uppercase tracking-[0.5em] text-marigold/80 font-bold mt-2.5">
@@ -172,15 +179,16 @@ export function Footer() {
         {/* ====================================================
             LAYER 3 — PREMIUM CONVERSION EXPERIENCE (WhatsApp CTA)
             ==================================================== */}
-        <div className="animate-reveal delay-5 flex flex-col items-center w-full">
+        <div className="animate-reveal delay-5 flex flex-col items-center w-full mt-2">
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-luxury-shine w-full max-w-[320px] py-4 px-8 mt-8 rounded-full border border-marigold bg-gradient-to-r from-maroon-deep via-maroon to-maroon-deep text-[9.5px] sm:text-[10px] uppercase tracking-[0.25em] font-semibold text-ivory flex items-center justify-center gap-2.5 shadow-[0_0_35px_rgba(232,192,122,0.15),inset_0_0_12px_rgba(250,246,239,0.05)] hover:shadow-[0_0_50px_rgba(232,192,122,0.45),inset_0_0_20px_rgba(250,246,239,0.15)] hover:border-marigold transition-all duration-500 scale-100 hover:scale-[1.03] active:scale-97 cursor-pointer z-10"
+            className="btn-royal-flashy w-full max-w-[320px] py-4.5 px-8 mt-6 rounded-full border-2 border-marigold/70 bg-gradient-to-r from-maroon-deep via-maroon to-maroon-deep text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold text-ivory flex items-center justify-center gap-2 cursor-pointer z-10"
             style={{ color: "var(--ivory)" }}
           >
-            <span>Begin Our Celebration</span>
+            <span className="text-marigold text-xs animate-pulse">✦</span>
+            <span className="tracking-[0.28em]">Begin Our Celebration</span>
             <span className="text-xs">→</span>
           </a>
         </div>
@@ -188,17 +196,17 @@ export function Footer() {
       </div>
 
       {/* Sleek Returning Path back to Top of Card */}
-      <div className="relative z-10 w-full flex justify-center pb-2 select-none">
+      <div className="relative z-10 w-full flex justify-center pb-2 mt-16 select-none">
         <button
           onClick={scrollToTop}
-          className="group animate-reveal delay-5 flex flex-col items-center gap-2.5 transition-all duration-500 hover:opacity-100 opacity-45 cursor-pointer"
+          className="group animate-reveal delay-5 flex flex-col items-center gap-3 transition-all duration-500 hover:opacity-100 opacity-55 cursor-pointer"
         >
-          <span className="text-[8px] uppercase tracking-[0.35em] text-ivory/80 group-hover:text-marigold transition-colors duration-300">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-marigold/20 bg-black/30 transition-all duration-500 group-hover:border-marigold group-hover:bg-marigold/10 shadow-[0_0_12px_rgba(232,192,122,0.03)] group-hover:shadow-[0_0_20px_rgba(232,192,122,0.15)] group-hover:scale-105 active:scale-95">
+            <ChevronUp className="h-4 w-4 text-marigold/80 group-hover:text-marigold transition-colors" />
+          </div>
+          <span className="text-[8.5px] uppercase tracking-[0.38em] text-ivory/70 group-hover:text-marigold transition-colors duration-300 font-medium">
             Return to Cover
           </span>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-marigold/15 transition-all duration-500 group-hover:border-marigold group-hover:bg-marigold/10 shadow-[0_0_12px_rgba(232,192,122,0.03)] group-hover:shadow-[0_0_20px_rgba(232,192,122,0.15)] group-hover:scale-105 active:scale-95">
-            <ChevronUp className="h-3.5 w-3.5 text-marigold/80 group-hover:text-marigold transition-colors" />
-          </div>
         </button>
       </div>
 
