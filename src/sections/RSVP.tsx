@@ -128,12 +128,13 @@ export function RSVP() {
       let isAppsScriptSuccess = false;
       const isPlaceholder = config.appsScriptUrl.includes("RsvpPlaceholder");
 
-      // 1. Submit to Google Apps Script Web App using exact JSON body requested (Step 2)
+      // 1. Submit to Google Apps Script Web App using exact JSON body and no-cors mode to bypass CORS issues
       if (config.appsScriptUrl && !isPlaceholder) {
         await fetch(config.appsScriptUrl, {
           method: "POST",
+          mode: "no-cors",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain",
           },
           body: JSON.stringify({
             guestName: form.name,
