@@ -267,6 +267,8 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsDrawing(true);
+    // Synchronously dispatch unlock gesture to authorize audio playback on mobile browsers
+    window.dispatchEvent(new CustomEvent("music:unlock"));
     const pt = getCanvasCoords(e.clientX, e.clientY);
     if (pt) scratch(pt.x, pt.y);
   };

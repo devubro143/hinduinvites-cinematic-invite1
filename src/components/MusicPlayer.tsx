@@ -94,8 +94,23 @@ export function MusicPlayer() {
       }).catch(err => console.warn("Music play blocked:", err));
     };
 
+    const handleUnlock = () => {
+      if (!audioRef.current) return;
+      
+      audioRef.current.play().then(() => {
+        setHasOpened(true);
+        setIsPlaying(true);
+        fadeIn();
+      }).catch(err => console.warn("Music pre-play/unlock blocked:", err));
+    };
+
     window.addEventListener("invitation:opened", handleInvitationOpen);
-    return () => window.removeEventListener("invitation:opened", handleInvitationOpen);
+    window.addEventListener("music:unlock", handleUnlock);
+    
+    return () => {
+      window.removeEventListener("invitation:opened", handleInvitationOpen);
+      window.removeEventListener("music:unlock", handleUnlock);
+    };
   }, [music.defaultVolume]);
 
   // 3. Handle Visibility Change (Pause/Resume)
@@ -143,12 +158,12 @@ export function MusicPlayer() {
   const toggleMute = () => {
     if (!audioRef.current) return;
     
-    if (isMuted) {
+    if (!isPlaying) {
       setIsMuted(false);
       audioRef.current.play().then(() => {
         setIsPlaying(true);
         fadeIn();
-      }).catch(() => {});
+      }).catch((err) => console.warn("Play failed:", err));
     } else {
       setIsMuted(true);
       fadeOut(() => setIsPlaying(false));
@@ -161,12 +176,12 @@ export function MusicPlayer() {
     <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
       <button
         onClick={toggleMute}
-        aria-label={isMuted ? "Unmute music" : "Mute music"}
+        aria-label={isMuted || !isPlaying ? "Unmute music" : "Mute music"}
         className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-elegant transition-all duration-500 hover:scale-110 hover:bg-white/10 active:scale-95"
       >
         <span className={`absolute inset-0 rounded-full border border-accent/30 ${isPlaying ? "animate-ping opacity-20" : "opacity-0"}`} />
         
-        {isMuted ? (
+        {isMuted || !isPlaying ? (
           <VolumeX className="h-5 w-5 text-ivory/60 transition-colors group-hover:text-ivory" />
         ) : (
           <Volume2 className="h-5 w-5 text-accent animate-pulse transition-colors group-hover:text-marigold" />
