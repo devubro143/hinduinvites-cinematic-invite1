@@ -16,6 +16,9 @@ export function RSVP() {
   const [loadingIndex, setLoadingIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
+  const [textareaGlow, setTextareaGlow] = useState(false);
+
   // Initialize bridal names and default blessing templates dynamically
   const brideName = wedding.bride?.name || "Bride";
   const groomName = wedding.groom?.name || "Groom";
@@ -59,6 +62,26 @@ export function RSVP() {
         console.error("Failed to dynamically load RSVP configuration:", err);
       });
   }, []);
+
+  // Prefill and dynamically personalize blessing signature
+  useEffect(() => {
+    if (!isMessageManuallyEdited) {
+      const signature = form.name.trim() ? `\n\n— ${form.name.trim()}` : "";
+      setForm((prev) => ({
+        ...prev,
+        message: `${defaultBlessing}${signature}`,
+      }));
+    }
+  }, [form.name, isMessageManuallyEdited, defaultBlessing]);
+
+  // Flash border gold glow pulse when auto-personalization signature updates
+  useEffect(() => {
+    if (form.name.trim() && !isMessageManuallyEdited) {
+      setTextareaGlow(true);
+      const timer = setTimeout(() => setTextareaGlow(false), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [form.name, isMessageManuallyEdited]);
 
   // Cycle through dynamic emotional button loading phrases sequentially
   useEffect(() => {
@@ -255,6 +278,8 @@ export function RSVP() {
       await new Promise((resolve) => setTimeout(resolve, 3200));
 
       // Reset form states cleanly
+      setIsMessageManuallyEdited(false);
+      setTextareaGlow(false);
       setForm({
         attendance: "attending",
         name: "",
@@ -393,6 +418,23 @@ export function RSVP() {
         }
         .button-pulse-active {
           animation: button-pulse-gold 1.8s ease-in-out infinite;
+        }
+        @keyframes textarea-glow-pulse {
+          0% {
+            box-shadow: 0 0 5px rgba(232, 192, 122, 0.05);
+            border-color: rgba(232, 192, 122, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 18px rgba(232, 192, 122, 0.35);
+            border-color: rgba(232, 192, 122, 0.55);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(232, 192, 122, 0.05);
+            border-color: rgba(232, 192, 122, 0.2);
+          }
+        }
+        .animate-textarea-glow {
+          animation: textarea-glow-pulse 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -708,9 +750,14 @@ export function RSVP() {
                 <textarea
                   rows={4}
                   value={form.message}
-                  onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
+                  onChange={(e) => {
+                    setIsMessageManuallyEdited(true);
+                    setForm((prev) => ({ ...prev, message: e.target.value }));
+                  }}
                   placeholder={labels.messagePlaceholder}
-                  className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/25 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300 text-sm sm:text-base leading-relaxed"
+                  className={`w-full rounded-lg border bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/25 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300 text-sm sm:text-base leading-relaxed ${
+                    textareaGlow ? "border-marigold animate-textarea-glow" : "border-marigold/20"
+                  }`}
                 />
               </Field>
 
