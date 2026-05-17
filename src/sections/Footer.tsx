@@ -48,10 +48,10 @@ export function Footer() {
           We look forward to seeing you
         </p>
 
-        <h2 className="animate-reveal delay-1 mt-8 font-display text-6xl leading-tight sm:text-7xl md:text-8xl">
-          {wedding.brideName}
-          <span className="mx-4 italic text-marigold">&</span>
-          {wedding.groomName}
+        <h2 className="animate-reveal delay-1 mt-8 font-display text-5xl sm:text-7xl md:text-8xl leading-[1.1] sm:leading-none text-balance text-premium-gold max-w-xl mx-auto">
+          <span className="block sm:inline">{wedding.brideName}</span>
+          <span className="my-2 sm:my-0 mx-4 inline-block italic text-marigold">&</span>
+          <span className="block sm:inline">{wedding.groomName}</span>
         </h2>
 
         <p className="animate-reveal delay-2 mt-8 text-sm italic opacity-70">
