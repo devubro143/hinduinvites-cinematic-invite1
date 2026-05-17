@@ -69,6 +69,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const baseUrl = wedding.seo.url || "https://wedding-invitation-portal.vercel.app";
+const absoluteOgImage = wedding.seo.ogImage
+  ? (wedding.seo.ogImage.startsWith("http")
+    ? wedding.seo.ogImage
+    : `${baseUrl.replace(/\/$/, "")}${wedding.seo.ogImage.startsWith("/") ? "" : "/"}${wedding.seo.ogImage}`)
+  : "";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -80,14 +87,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "HinduInvites" },
       { property: "og:title", content: wedding.seo.title },
       { property: "og:description", content: wedding.seo.description },
-      { property: "og:image", content: wedding.seo.ogImage },
+      { property: "og:image", content: absoluteOgImage },
       { property: "og:url", content: wedding.seo.url },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: wedding.seo.twitterHandle },
       { name: "twitter:title", content: wedding.seo.title },
       { name: "twitter:description", content: wedding.seo.description },
-      { name: "twitter:image", content: wedding.seo.ogImage },
+      { name: "twitter:image", content: absoluteOgImage },
     ],
   }),
   component: RootComponent,
