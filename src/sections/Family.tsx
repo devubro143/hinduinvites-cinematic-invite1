@@ -73,7 +73,7 @@ const FamilyMemberRow = memo(function FamilyMemberRow({
           </a>
           {contact.whatsapp && (
             <a
-              href={`https://wa.me/${contact.whatsapp}`}
+              href={`https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Namaste! I just viewed the beautiful wedding invitation of Virat & Anushka. It is absolutely stunning, royal, and cinematic! Looking forward to being part of this auspicious celebration. ❤️")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-8 w-8 items-center justify-center rounded-full border border-marigold/20 bg-maroon-deep/30 text-marigold backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:text-accent hover:border-marigold/50 hover:bg-maroon/20 hover:shadow-[0_0_12px_rgba(232,192,122,0.15)]"
@@ -109,7 +109,7 @@ export const Family = memo(function Family() {
   return (
     <section 
       id="family" 
-      className="px-6 py-24 sm:py-32 relative overflow-hidden bg-[#08030a] z-10"
+      className="px-6 py-12 sm:py-32 relative overflow-hidden bg-[#08030a] z-10"
     >
       {/* Background Gradients: Maroon Deep -> Wine -> Amber Glow -> Soft Champagne */}
       <div 
@@ -145,7 +145,7 @@ export const Family = memo(function Family() {
           subtitle="Two families, joined by love, blessed by tradition."
         />
 
-        <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 relative z-10">
+        <div className="mx-auto mt-8 sm:mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 relative z-10">
           
           {/* Bride's Family Panel */}
           {families?.bride && (

@@ -380,7 +380,7 @@ export function RSVP() {
   const maxGuests = config?.guestLimit?.max ?? 20;
 
   return (
-    <section id="rsvp" className="relative px-6 py-24 sm:py-32 overflow-hidden bg-[#08030a]">
+    <section id="rsvp" className="relative px-6 py-12 sm:py-32 overflow-hidden bg-[#08030a]">
       {/* Dynamic inline styles for golden cinematic elements */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes luxury-drift {

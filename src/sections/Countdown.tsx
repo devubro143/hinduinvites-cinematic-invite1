@@ -79,7 +79,7 @@ export function Countdown() {
   return (
     <section 
       id="countdown" 
-      className="relative overflow-hidden px-6 py-24 sm:py-32 z-10"
+      className="relative overflow-hidden px-6 py-12 sm:py-32 z-10"
       style={{ background: intensity.gradient }}
     >
       {/* 3. Slow Golden Dust Sweep (Moving slow spotlight across background) */}
@@ -161,7 +161,7 @@ export function Countdown() {
         </div>
 
         {/* 8. Mechanical Staggered Countdown Modules */}
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6 relative">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6 relative">
           <CountdownCard 
             value={timeLeft.days} 
             label="Days" 

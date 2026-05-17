@@ -29,68 +29,150 @@
   },
   "story": {
     "title": "Our Story",
-    "body": "From a quiet evening in Jaipur to a promise written under the desert stars — our journey has been a slow unfolding of laughter, late-night chai, and the kind of love that feels like home. Now, surrounded by the people who shaped us, we begin our forever.",
+    "body": "From a chance meeting on a bustling studio set in 2013 to a fairytale union under the Tuscan sun in 2017—our journey has been a beautiful blend of private conversations, grand stadium milestones, and the silent strength of holding hands. Now, surrounded by Lake Pichola's ancient waters, we stand with our family to celebrate our eternal promise.",
     "moments": [
-      { "year": "2021", "title": "First Meeting", "note": "A monsoon evening in Jaipur." },
-      { "year": "2023", "title": "The Proposal", "note": "Under the stars in Jaisalmer." },
-      { "year": "2026", "title": "Forever", "note": "Sealed with seven sacred vows." }
+      {
+        "year": "2013",
+        "title": "The Serendipitous Spark",
+        "note": "A chance meeting on a shampoo commercial shoot in Mumbai. What began as nervous laughter behind the scenes turned into hours of effortless conversation, discovering a shared ground of simple middle-class roots."
+      },
+      {
+        "year": "2014",
+        "title": "Love Under the Spotlight",
+        "note": "Virat blew a historic flying kiss from the stadium pitch to Anushka in the stands after reaching a major century milestone. A silent, grand declaration of love that captured the hearts of millions."
+      },
+      {
+        "year": "2017",
+        "title": "Fairytale in Tuscany",
+        "note": "Under the warm golden sun of Borgo Finocchieto in Tuscany, Italy, they exchanged secret sacred vows surrounded by absolute silence, blooming pastels, and their closest family."
+      },
+      {
+        "year": "2021",
+        "title": "A New Grace: Vamika",
+        "note": "Their lives were blessed with their first baby girl, Vamika, bringing a profound sense of grace, warmth, and completion to their world, forever anchoring their love as a family."
+      },
+      {
+        "year": "2026",
+        "title": "A Decade & Beyond",
+        "note": "Over ten years of holding hands through victories and quiet moments. Now, they stand by the waters of Udaipur to celebrate their sacred steps, surrounded by their children, family, and forever."
+      }
     ]
   },
   "events": [
     {
       "id": "haldi",
       "title": "Haldi",
-      "date": "12 Feb 2026",
+      "date": "23 July 2026",
       "time": "10:00 AM",
       "venue": "Garden Lawns, The Leela Palace",
       "city": "Udaipur",
       "description": "A morning bathed in turmeric, blessings and joy.",
       "mapsUrl": "https://maps.google.com/?q=The+Leela+Palace+Udaipur",
-      "icon": "🌼"
+      "icon": "🌼",
+      "schedule": [
+        { "time": "9:30 AM", "title": "Morning Raga & Chai", "note": "Traditional sitar music with hot cutting chai." },
+        { "time": "10:00 AM", "title": "Haldi Ceremony & Bathing Ritual", "note": "Bathing the couple in marigold petals and sacred turmeric." },
+        { "time": "12:30 PM", "title": "Traditional Mewari Feast", "note": "A rich culinary journey through local Rajasthani delicacies." }
+      ],
+      "dressCode": "Vibrant Yellows, Mustard, & Marigold traditional attire",
+      "guestNotes": "Be ready to get smeared in turmeric and love! Wear breathable fabrics.",
+      "hospitalityInfo": "Fresh tender coconut water, sweet lassi, and marigold garlands welcome you.",
+      "transportNotes": "Complimentary shuttle departs the main reception lobby at 9:15 AM.",
+      "emotionalMessage": "Haldi is our laughter bathed in sunshine—a sacred ritual of pure joy, warm blessings, and golden memories.",
+      "musicAmbience": "Traditional Rajasthani Folk & Live Dhol Beats",
+      "miniGallery": ["gallery/1.jpg", "gallery/2.jpg", "gallery/3.jpg"]
     },
     {
       "id": "mehendi",
       "title": "Mehendi",
-      "date": "12 Feb 2026",
+      "date": "23 July 2026",
       "time": "4:00 PM",
       "venue": "Courtyard Pavilion",
       "city": "Udaipur",
       "description": "Henna, music, and laughter as the love story is drawn into skin.",
       "mapsUrl": "https://maps.google.com/?q=The+Leela+Palace+Udaipur",
-      "icon": "🌿"
+      "icon": "🌿",
+      "schedule": [
+        { "time": "4:00 PM", "title": "Intricate Henna Art & Bangle Bazaar", "note": "Exquisite custom mehendi designs by royal artists." },
+        { "time": "5:30 PM", "title": "Ghoomar Dancers & Live Folk Songs", "note": "Captivating Mewari folk performances under the canopy." },
+        { "time": "7:00 PM", "title": "High Tea & Gourmet Chaat Counters", "note": "Indian street delicacies presented in royal styling." }
+      ],
+      "dressCode": "Leheriya, Florals, or Mint & Forest Greens",
+      "guestNotes": "Choose custom designs featuring our signature wedding monogram or hashtag.",
+      "hospitalityInfo": "A dedicated hand relaxation lounge with calming lavender wipes will be active.",
+      "transportNotes": "Shuttles run continuously from the Garden Lawns starting at 3:45 PM.",
+      "emotionalMessage": "As the deep amber henna leaves its touch on our skin, our hearts are forever painted with promises.",
+      "musicAmbience": "Sufi Melodies, Acoustic Sitar, & Bohemian Beats",
+      "miniGallery": ["gallery/4.jpg", "gallery/5.jpg", "gallery/6.jpg"]
     },
     {
       "id": "sangeet",
       "title": "Sangeet",
-      "date": "13 Feb 2026",
+      "date": "24 July 2026",
       "time": "7:30 PM",
       "venue": "Lakeside Ballroom",
       "city": "Udaipur",
       "description": "An evening of music, dance and unforgettable performances.",
       "mapsUrl": "https://maps.google.com/?q=The+Leela+Palace+Udaipur",
-      "icon": "✦"
+      "icon": "✦",
+      "schedule": [
+        { "time": "7:30 PM", "title": "Royal Red Carpet & Cocktails", "note": "Signature single malts, custom cocktails, and dynamic portraits." },
+        { "time": "8:30 PM", "title": "The Grand Musical Storyboard", "note": "A custom choreographic performance tracing our journey together." },
+        { "time": "10:30 PM", "title": "After-Hours Revelry & Dhol Fusion", "note": "Featuring high-octane live percussion and electric beats." }
+      ],
+      "dressCode": "Glitzy Indo-Western, Velvet Sherwanis, & Shimmering Lehengas",
+      "guestNotes": "The dance floor is highly addictive. Comfy custom wedding sliders will be provided!",
+      "hospitalityInfo": "Global gourmet live counters and an artisanal dessert bar remain open late.",
+      "transportNotes": "Royal boats depart the palace jetty every 10 minutes from 7:00 PM onwards.",
+      "emotionalMessage": "A night of starlight and pure rhythm, where two families dance as one heartbeat under Udaipur's night sky.",
+      "musicAmbience": "Live Bollywood Orchestra, Electronic Dhol, & Retro Beats",
+      "miniGallery": ["gallery/2.jpg", "gallery/4.jpg", "gallery/1.jpg"]
     },
     {
       "id": "wedding",
       "title": "Wedding",
-      "date": "14 Feb 2026",
+      "date": "25 July 2026",
       "time": "8:00 PM",
       "venue": "Mandap by the Lake",
       "city": "Udaipur",
       "description": "Seven vows around the sacred fire — the heart of our union.",
       "mapsUrl": "https://maps.google.com/?q=The+Leela+Palace+Udaipur",
-      "icon": "🪔"
+      "icon": "🪔",
+      "schedule": [
+        { "time": "4:30 PM", "title": "The Royal Baraat Procession", "note": "A grand, vintage-themed musical arrival of the groom." },
+        { "time": "5:30 PM", "title": "Varmala & Petal Shower", "note": "Exchanging our garlands under a breathtaking lakeside firework display." },
+        { "time": "6:00 PM", "title": "Vedic Nuptials & Pheras", "note": "Solemnizing our commitment with ancient Sanskrit verses." }
+      ],
+      "dressCode": "Traditional Indian Royal (Deep Crimson, Maroon, Cream, & Antique Gold)",
+      "guestNotes": "The ceremony is outdoors by the lake. A light pashmina or dinner jacket is advised.",
+      "hospitalityInfo": "Assigned luxury seating. Sacred prasad and traditional warm beverages served.",
+      "transportNotes": "VIP golf cart fleet is at your service from the reception driveway.",
+      "emotionalMessage": "Bound by seven sacred steps, in the presence of ancient fire and the ones we love, we begin our forever.",
+      "musicAmbience": "Live Shehnai, Vedic Chants, & Instrumental Santoor",
+      "miniGallery": ["gallery/5.jpg", "gallery/3.jpg", "gallery/6.jpg"]
     },
     {
       "id": "reception",
       "title": "Reception",
-      "date": "15 Feb 2026",
+      "date": "26 July 2026",
       "time": "7:00 PM",
       "venue": "Grand Ballroom",
       "city": "Udaipur",
       "description": "A celebratory evening with the families we hold dear.",
       "mapsUrl": "https://maps.google.com/?q=The+Leela+Palace+Udaipur",
-      "icon": "✺"
+      "icon": "✺",
+      "schedule": [
+        { "time": "7:00 PM", "title": "Champagne Toast & Harpsichord Welcome", "note": "Welcome greeting with flowing champagne towers and live classical harp." },
+        { "time": "8:30 PM", "title": "Cake Cutting & The First Waltz", "note": "Under the crystal chandeliers in the majestic Grand Ballroom." },
+        { "time": "9:30 PM", "title": "Imperial Gala Feast & Jazz Orchestra", "note": "A silver-service sit-down dinner featuring curated global cuisine." }
+      ],
+      "dressCode": "Formal Black Tie, Evening Gowns, or Royal Tuxedos",
+      "guestNotes": "A professional editorial portrait studio will be set up to capture you in your finest.",
+      "hospitalityInfo": "Dedicated eldercare assistants and children's activity lounge available.",
+      "transportNotes": "Airport departures concierge desk will be active in the lobby.",
+      "emotionalMessage": "A night of grand gratitude—raising a glass of champagne to new horizons, old friends, and endless love.",
+      "musicAmbience": "Live Jazz Quartet & Classical Symphonic Orchestra",
+      "miniGallery": ["gallery/1.jpg", "gallery/5.jpg", "gallery/3.jpg"]
     }
   ],
   "gallery": [
@@ -120,10 +202,10 @@
     "title": "Our Pre-Wedding Film"
   },
   "contacts": [
-    { "name": "Mr. & Mrs. Sharma", "role": "Parents of the Bride", "phone": "+91 98765 43210", "whatsapp": "919876543210", "side": "bride" },
-    { "name": "Mr. & Mrs. Kohli", "role": "Parents of the Groom", "phone": "+91 98765 12345", "whatsapp": "919876512345", "side": "groom" },
-    { "name": "Rohan Sharma", "role": "Bride's Brother · Coordinator", "phone": "+91 90000 11111", "whatsapp": "919000011111", "side": "coordinator" },
-    { "name": "Vikas Kohli", "role": "Groom's Brother · Coordinator", "phone": "+91 90000 22222", "whatsapp": "919000022222", "side": "coordinator" }
+    { "name": "Mr. & Mrs. Sharma", "role": "Parents of the Bride", "phone": "+91 93768 13483", "whatsapp": "919376813483", "side": "bride" },
+    { "name": "Mr. & Mrs. Kohli", "role": "Parents of the Groom", "phone": "+91 93768 13483", "whatsapp": "919376813483", "side": "groom" },
+    { "name": "Rohan Sharma", "role": "Bride's Brother · Coordinator", "phone": "+91 93768 13483", "whatsapp": "919376813483", "side": "coordinator" },
+    { "name": "Vikas Kohli", "role": "Groom's Brother · Coordinator", "phone": "+91 93768 13483", "whatsapp": "919376813483", "side": "coordinator" }
   ],
   "families": {
     "bride": {
@@ -146,7 +228,7 @@
   "itinerary": [
     {
       "day": "Day 1 — Welcome",
-      "date": "11 Feb 2026",
+      "date": "22 July 2026",
       "items": [
         { "time": "3:00 PM", "title": "Guest Check-in", "note": "The Leela Palace, Udaipur" },
         { "time": "8:00 PM", "title": "Welcome Dinner", "note": "Lakeside terrace" }
@@ -154,7 +236,7 @@
     },
     {
       "day": "Day 2 — Haldi & Mehendi",
-      "date": "12 Feb 2026",
+      "date": "23 July 2026",
       "items": [
         { "time": "10:00 AM", "title": "Haldi Ceremony" },
         { "time": "4:00 PM", "title": "Mehendi Afternoon" }
@@ -162,7 +244,7 @@
     },
     {
       "day": "Day 3 — Sangeet",
-      "date": "13 Feb 2026",
+      "date": "24 July 2026",
       "items": [
         { "time": "11:00 AM", "title": "Brunch & Relaxation" },
         { "time": "7:30 PM", "title": "Sangeet Night" }
@@ -170,7 +252,7 @@
     },
     {
       "day": "Day 4 — Wedding",
-      "date": "14 Feb 2026",
+      "date": "25 July 2026",
       "items": [
         { "time": "5:00 PM", "title": "Baraat Procession" },
         { "time": "8:00 PM", "title": "Wedding Ceremony" }
@@ -178,7 +260,7 @@
     },
     {
       "day": "Day 5 — Reception",
-      "date": "15 Feb 2026",
+      "date": "26 July 2026",
       "items": [
         { "time": "12:00 PM", "title": "Farewell Brunch" },
         { "time": "7:00 PM", "title": "Reception" }
@@ -187,7 +269,7 @@
   ],
   "rsvp": {
     "enabled": true,
-    "deadline": "1 February 2026",
+    "deadline": "15 June 2026",
     "message": "Your presence is our greatest blessing."
   },
   "mapsEmbedUrl": "https://www.google.com/maps?q=The+Leela+Palace+Udaipur&output=embed",

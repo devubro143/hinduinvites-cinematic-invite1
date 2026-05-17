@@ -11,7 +11,7 @@ export const Couple = memo(function Couple() {
   const groomImg = groom.image || "/media/priya-aarav/gallery/3.jpg";
 
   return (
-    <section id="couple" className="relative px-6 py-24 sm:py-32 overflow-hidden bg-[#08030a]">
+    <section id="couple" className="relative px-6 py-12 sm:py-32 overflow-hidden bg-[#08030a]">
       {/* Editorial Spotlight Backdrop (Maroon -> Wine -> Soft Amber) */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none opacity-30 blur-[130px] mix-blend-screen"
@@ -28,7 +28,7 @@ export const Couple = memo(function Couple() {
         subtitle="Two paths designed by destiny, converging into a single eternal journey."
       />
 
-      <div className="mx-auto mt-16 max-w-5xl grid gap-12 sm:grid-cols-2 sm:gap-16 relative z-10">
+      <div className="mx-auto mt-8 sm:mt-16 max-w-5xl grid gap-12 sm:grid-cols-2 sm:gap-16 relative z-10">
         {/* Bride Card */}
         <div className="animate-reveal flex flex-col items-center text-center">
           {/* Elegant Arch Frame with inner gold border and shadow glows */}

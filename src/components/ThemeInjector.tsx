@@ -11,7 +11,7 @@ export function ThemeInjector() {
     // Apply colors
     Object.entries(colors).forEach(([key, value]) => {
       const cssKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
-      root.style.setProperty(`--${cssKey}`, value);
+      root.style.setProperty(`--${cssKey}`, value as string);
     });
 
     // Apply effects

@@ -39,7 +39,7 @@ export const Gallery = memo(function Gallery() {
   return (
     <section 
       id="gallery" 
-      className="relative overflow-hidden px-0 py-24 sm:py-32 bg-[#08030a] z-10"
+      className="relative overflow-hidden px-0 py-12 sm:py-32 bg-[#08030a] z-10"
     >
       {/* Background Gradients: Maroon Deep -> Wine -> Amber Glow -> Soft Champagne */}
       <div 
@@ -89,7 +89,7 @@ export const Gallery = memo(function Gallery() {
         </p>
       </div>
 
-      <div className="mt-16 space-y-8 relative z-10">
+      <div className="mt-8 sm:mt-16 space-y-8 relative z-10">
         {/* Repeat disjoint sets for seamless CSS marquee rows */}
         <MarqueeRow images={[...row1, ...row1, ...row1, ...row1]} direction="left" duration="52s" />
         <MarqueeRow images={[...row2, ...row2, ...row2, ...row2]} direction="right" duration="68s" />

@@ -359,4 +359,42 @@
   will-change: transform;
 }
 
+/* Luxury Custom Hero Enhancements */
+.text-royal-gold {
+  background: linear-gradient(135deg, #f6e6c2 0%, #e8c07a 40%, #c59f5b 70%, #f6e6c2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+}
+
+.btn-luxury-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-luxury-shine::after {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: -50%; 
+  width: 200%; 
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 30%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  transform: skewX(-20deg);
+  transition: 0.75s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-luxury-shine:hover::after {
+  opacity: 1;
+  left: 125%;
+}
+
+
 

@@ -70,7 +70,7 @@ export function Video() {
   if (!video.enabled) return null;
 
   return (
-    <section id="video" className="relative px-6 py-24 sm:py-32 overflow-hidden bg-[#08030a]">
+    <section id="video" className="relative px-6 py-12 sm:py-32 overflow-hidden bg-[#08030a]">
       {/* Luxury Theatre Depth Backdrops (Deep Black-Maroon + Golden glow) */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#08030a] via-black to-[#050106] pointer-events-none" />
       <div 
@@ -100,7 +100,7 @@ export function Video() {
 
       <SectionTitle eyebrow="The Premiere" title={video.title} />
       
-      <div className="mx-auto mt-16 max-w-5xl relative group z-10">
+      <div className="mx-auto mt-8 sm:mt-16 max-w-5xl relative group z-10">
         {/* Glowing atmospheric halo around the video frame */}
         <div 
           className={`absolute -inset-4 bg-gradient-to-r from-maroon-deep via-marigold/10 to-maroon-deep blur-3xl rounded-[3rem] transition-opacity duration-1000 pointer-events-none ${

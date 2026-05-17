@@ -17,7 +17,7 @@ export const Location = memo(function Location() {
   return (
     <section 
       id="location" 
-      className="relative overflow-hidden bg-[#08030a] px-6 py-24 sm:py-32 z-10"
+      className="relative overflow-hidden bg-[#08030a] px-6 py-12 sm:py-32 z-10"
     >
       {/* Background Gradients: Maroon Deep -> Wine -> Amber Glow -> Soft Champagne */}
       <div 
@@ -54,7 +54,7 @@ export const Location = memo(function Location() {
         />
 
         {/* Reusable Royal Venue Card Centerpiece */}
-        <div className="mt-16">
+        <div className="mt-8 sm:mt-16">
           <RoyalVenueCard
             venue={wedding.venue}
             city={wedding.city}

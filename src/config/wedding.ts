@@ -30,6 +30,14 @@ export type WeddingEvent = {
   description: string;
   mapsUrl?: string;
   icon?: string;
+  schedule?: { time: string; title: string; note?: string }[];
+  dressCode?: string;
+  guestNotes?: string;
+  hospitalityInfo?: string;
+  transportNotes?: string;
+  emotionalMessage?: string;
+  musicAmbience?: string;
+  miniGallery?: string[];
 };
 
 export type Contact = {

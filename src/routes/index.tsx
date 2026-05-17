@@ -6,7 +6,6 @@ import { Countdown } from "@/sections/Countdown";
 import { Events } from "@/sections/Events";
 import { Gallery } from "@/sections/Gallery";
 import { Video } from "@/sections/Video";
-import { Itinerary } from "@/sections/Itinerary";
 import { Family } from "@/sections/Family";
 import { Location } from "@/sections/Location";
 import { RSVP } from "@/sections/RSVP";
@@ -40,7 +39,6 @@ function Index() {
       <Events />
       <Gallery />
       <Video />
-      <Itinerary />
       <Family />
       <Location />
       <RSVP />

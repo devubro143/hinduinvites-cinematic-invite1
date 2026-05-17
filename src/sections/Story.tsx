@@ -46,7 +46,7 @@ export const Story = memo(function Story() {
   }, [story.moments]);
 
   return (
-    <section id="story" className="relative px-6 py-24 sm:py-32 overflow-hidden bg-[#08030a]">
+    <section id="story" className="relative px-6 py-12 sm:py-32 overflow-hidden bg-[#08030a]">
       {/* Subtle background ambient light */}
       <div 
         className="absolute inset-0 z-0 opacity-20 pointer-events-none"
@@ -57,7 +57,7 @@ export const Story = memo(function Story() {
 
       <SectionTitle eyebrow="Our Journey" title={story.title} subtitle={story.body} />
 
-      <div className="relative mx-auto mt-16 max-w-5xl">
+      <div className="relative mx-auto mt-8 sm:mt-16 max-w-5xl">
         {/* Cinematic Horizontal Timeline Rail */}
         <div className="absolute left-8 right-8 top-[36px] h-px bg-gradient-to-r from-transparent via-marigold/30 to-transparent z-0 pointer-events-none" />
 
@@ -70,7 +70,7 @@ export const Story = memo(function Story() {
             msOverflowStyle: "none",
           }}
         >
-          {story.moments.map((m, i) => {
+          {story.moments.map((m: any, i: number) => {
             const IconComponent = STORY_ICONS[i % STORY_ICONS.length];
             return (
               <div
