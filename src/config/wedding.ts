@@ -56,6 +56,14 @@ export const wedding = {
   // Process asset paths
   heroImage: getAsset(clientData.heroImage),
   blessingImage: getAsset(clientData.blessingImage),
+  bride: {
+    ...clientData.bride,
+    image: getAsset(clientData.bride.image),
+  },
+  groom: {
+    ...clientData.groom,
+    image: getAsset(clientData.groom.image),
+  },
   gallery: (clientData.gallery || []).map((img: string) => getAsset(img)),
   
   music: {

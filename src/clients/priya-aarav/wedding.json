@@ -16,6 +16,16 @@
   "openingShloka": "ॐ गणेशाय नमः",
   "openingShlokaTranslit": "Om Ganeshaya Namaḥ",
   "openingShlokaMeaning": "We bow to Lord Ganesha — remover of obstacles — as we begin this sacred journey.",
+  "bride": {
+    "name": "Anushka",
+    "image": "bride.jpg",
+    "bio": "Architect by profession, dreamer by heart. She finds poetry in monsoon clouds and laughter in old Hindi cinema."
+  },
+  "groom": {
+    "name": "Virat",
+    "image": "groom.jpg",
+    "bio": "Captain of the pitch, standard of devotion. He finds music in quiet moments and strength in the eyes of his beloved."
+  },
   "story": {
     "title": "Our Story",
     "body": "From a quiet evening in Jaipur to a promise written under the desert stars — our journey has been a slow unfolding of laughter, late-night chai, and the kind of love that feels like home. Now, surrounded by the people who shaped us, we begin our forever.",
