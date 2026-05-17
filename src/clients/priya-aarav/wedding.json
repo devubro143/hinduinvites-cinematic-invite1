@@ -124,6 +124,24 @@
     { "name": "Rohan Sharma", "role": "Bride's Brother · Coordinator", "phone": "+91 90000 11111", "whatsapp": "919000011111", "side": "coordinator" },
     { "name": "Vikas Kohli", "role": "Groom's Brother · Coordinator", "phone": "+91 90000 22222", "whatsapp": "919000022222", "side": "coordinator" }
   ],
+  "families": {
+    "bride": {
+      "title": "The Sharmas",
+      "members": [
+        { "role": "FATHER", "name": "Shri Ajay Sharma", "image": "bride_father.jpg" },
+        { "role": "MOTHER", "name": "Smt. Ashima Sharma", "image": "bride_mother.jpg" },
+        { "role": "BROTHER", "name": "Rohan Sharma", "image": "bride_brother.jpg" }
+      ]
+    },
+    "groom": {
+      "title": "The Kohlis",
+      "members": [
+        { "role": "FATHER", "name": "Late Shri Prem Nath Kohli", "image": "groom_father.jpg" },
+        { "role": "MOTHER", "name": "Smt. Saroj Kohli", "image": "groom_mother.jpg" },
+        { "role": "BROTHER", "name": "Vikas Kohli", "image": "groom_brother.jpg" }
+      ]
+    }
+  },
   "itinerary": [
     {
       "day": "Day 1 — Welcome",

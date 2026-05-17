@@ -64,6 +64,22 @@ export const wedding = {
     ...clientData.groom,
     image: getAsset(clientData.groom.image),
   },
+  families: {
+    bride: {
+      ...clientData.families?.bride,
+      members: (clientData.families?.bride?.members || []).map((m: any) => ({
+        ...m,
+        image: getAsset(m.image),
+      })),
+    },
+    groom: {
+      ...clientData.families?.groom,
+      members: (clientData.families?.groom?.members || []).map((m: any) => ({
+        ...m,
+        image: getAsset(m.image),
+      })),
+    },
+  },
   gallery: (clientData.gallery || []).map((img: string) => getAsset(img)),
   
   music: {
