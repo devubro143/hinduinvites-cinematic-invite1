@@ -10,6 +10,7 @@ declare global {
   }
 }
 
+
 export function Video() {
   const { video } = wedding;
   const [isPlaying, setIsPlaying] = useState(false);
@@ -145,3 +146,4 @@ export function Video() {
     </section>
   );
 }
+
