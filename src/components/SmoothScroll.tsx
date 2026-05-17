@@ -21,6 +21,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     });
 
     lenisRef.current = lenis;
+    (window as any).lenis = lenis;
 
     // Start in stopped state if invitation is not yet opened
     // (This is handled by body { overflow: hidden } usually, but Lenis stop() is safer)
@@ -43,6 +44,9 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       window.removeEventListener("invitation:opened", handleOpen);
       lenis.destroy();
       lenisRef.current = null;
+      try {
+        delete (window as any).lenis;
+      } catch (e) {}
     };
   }, [isReducedMotion]);
 

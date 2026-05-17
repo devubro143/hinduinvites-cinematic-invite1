@@ -9,6 +9,23 @@ export const Hero = memo(function Hero() {
   const baseParticleCount = Math.floor(theme.effects.particleDensity / 2);
   const particleCount = isReducedMotion ? Math.min(baseParticleCount, 5) : baseParticleCount;
 
+  const handleEnterCelebration = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.scrollTo("#couple", {
+        duration: 2.6, // Slow, prestigious, premium scroll speed
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exquisite luxury easing
+        lock: true, // Lock user scroll during transition to ensure absolute visual smoothness
+      });
+    } else {
+      const element = document.getElementById("couple");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
       {/* Background image */}
@@ -46,7 +63,7 @@ export const Hero = memo(function Hero() {
         <p className="animate-reveal text-xs uppercase tracking-[0.5em] text-accent" style={{ color: "var(--marigold)" }}>
           {wedding.openingShlokaTranslit}
         </p>
-        <p className="animate-reveal delay-1 mt-2 font-display text-2xl sm:text-3xl" style={{ color: "var(--ivory)" }}>
+        <p className="animate-reveal mt-2 font-display text-2xl sm:text-3xl" style={{ color: "var(--ivory)" }}>
           {wedding.openingShloka}
         </p>
 
@@ -93,7 +110,8 @@ export const Hero = memo(function Hero() {
         </div>
 
         <a
-          href="#events"
+          href="#couple"
+          onClick={handleEnterCelebration}
           className="animate-reveal delay-5 mt-12 inline-flex items-center gap-2 rounded-full border border-accent/60 px-8 py-3 text-sm uppercase tracking-[0.3em] backdrop-blur transition hover:bg-accent hover:text-foreground"
           style={{ color: "var(--ivory)" }}
         >
