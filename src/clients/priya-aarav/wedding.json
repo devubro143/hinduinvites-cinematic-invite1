@@ -1,11 +1,11 @@
 {
   "coupleId": "priya-aarav",
   "themeId": "royal-maroon",
-  "brideName": "Priya",
-  "groomName": "Aarav",
-  "brideFull": "Priya Sharma",
-  "groomFull": "Aarav Kapoor",
-  "hashtag": "#AaravWedsPriya",
+  "brideName": "Anushka",
+  "groomName": "Virat",
+  "brideFull": "Anushka Sharma",
+  "groomFull": "Virat Kohli",
+  "hashtag": "#VirushkaForever",
   "tagline": "Two souls. One sacred vow.",
   "weddingDate": "2026-07-25",
   "weddingDateDisplay": "25 July 2026",
@@ -110,9 +110,9 @@
   },
   "contacts": [
     { "name": "Mr. & Mrs. Sharma", "role": "Parents of the Bride", "phone": "+91 98765 43210", "whatsapp": "919876543210", "side": "bride" },
-    { "name": "Mr. & Mrs. Kapoor", "role": "Parents of the Groom", "phone": "+91 98765 12345", "whatsapp": "919876512345", "side": "groom" },
+    { "name": "Mr. & Mrs. Kohli", "role": "Parents of the Groom", "phone": "+91 98765 12345", "whatsapp": "919876512345", "side": "groom" },
     { "name": "Rohan Sharma", "role": "Bride's Brother · Coordinator", "phone": "+91 90000 11111", "whatsapp": "919000011111", "side": "coordinator" },
-    { "name": "Aditi Kapoor", "role": "Groom's Sister · Coordinator", "phone": "+91 90000 22222", "whatsapp": "919000022222", "side": "coordinator" }
+    { "name": "Vikas Kohli", "role": "Groom's Brother · Coordinator", "phone": "+91 90000 22222", "whatsapp": "919000022222", "side": "coordinator" }
   ],
   "itinerary": [
     {
@@ -163,11 +163,11 @@
   },
   "mapsEmbedUrl": "https://www.google.com/maps?q=The+Leela+Palace+Udaipur&output=embed",
   "seo": {
-    "title": "Priya & Aarav — Wedding Invitation",
-    "description": "Join us as we celebrate the union of Priya Sharma and Aarav Kapoor. February 14, 2026.",
-    "keywords": "wedding, invitation, Priya and Aarav, Hindu wedding, Udaipur wedding",
+    "title": "Virat & Anushka — Wedding Invitation",
+    "description": "Join us as we celebrate the union of Anushka Sharma and Virat Kohli. February 14, 2026.",
+    "keywords": "wedding, invitation, Virat and Anushka, Hindu wedding, Udaipur wedding",
     "ogImage": "hero.jpg",
-    "url": "https://priya-weds-aarav.com",
+    "url": "https://virat-weds-anushka.com",
     "twitterHandle": "@HinduInvites"
   }
 }
