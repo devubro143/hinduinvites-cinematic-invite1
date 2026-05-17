@@ -102,10 +102,10 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
     ctx.textBaseline = "middle";
     ctx.fillText("ॐ", cx, cy - 8);
 
-    // "Break the Seal" label
-    ctx.fillStyle = "rgba(232,192,122,0.55)";
-    ctx.font = "italic 11px 'Playfair Display', serif";
-    ctx.fillText("Break the Seal", cx, cy + 22);
+    // "Scratch to open invitation" label
+    ctx.fillStyle = "rgba(232, 192, 122, 0.85)"; // Highlighted premium gold
+    ctx.font = "italic 9.5px 'Playfair Display', serif";
+    ctx.fillText("Scratch to open invitation", cx, cy + 22);
 
     // Set composite for scratching
     ctx.globalCompositeOperation = "destination-out";
