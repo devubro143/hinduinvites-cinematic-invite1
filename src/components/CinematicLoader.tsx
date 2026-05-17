@@ -15,7 +15,13 @@ export function CinematicLoader() {
     const timer2 = setTimeout(() => setExiting(true), isReducedMotion ? 1200 : 2400);
     
     // Remove from DOM
-    const timer3 = setTimeout(() => setMounted(false), isReducedMotion ? 1800 : 3600);
+    const timer3 = setTimeout(() => {
+      setMounted(false);
+      if (typeof window !== "undefined") {
+        (window as any).__loaderFinished = true;
+        window.dispatchEvent(new CustomEvent("loader:finished"));
+      }
+    }, isReducedMotion ? 1800 : 3600);
 
     return () => {
       clearTimeout(timer1);

@@ -8,6 +8,20 @@ import { useInvitationParams } from "@/hooks/useInvitationParams";
 export function InvitationCover() {
   const { guest, side } = useInvitationParams();
   const isReducedMotion = useReducedMotion();
+  const [loaderFinished, setLoaderFinished] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !!(window as any).__loaderFinished;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (loaderFinished) return;
+    const handleFinished = () => setLoaderFinished(true);
+    window.addEventListener("loader:finished", handleFinished);
+    return () => window.removeEventListener("loader:finished", handleFinished);
+  }, [loaderFinished]);
+
   const [blessingDone, setBlessingDone] = useState(false);
   const [opening, setOpening] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -34,6 +48,17 @@ export function InvitationCover() {
   };
 
   if (hidden) return null;
+
+  // Delay rendering anything until the main loader has finished and exited
+  // We render a solid fullscreen cover to prevent the main site from flashing underneath the loader
+  if (!loaderFinished) {
+    return (
+      <div
+        aria-label="Wedding invitation cover placeholder"
+        className="fixed inset-0 z-[100] bg-cinematic-deep"
+      />
+    );
+  }
 
   // Phase 1: Blessing sequence
   if (!blessingDone) {
