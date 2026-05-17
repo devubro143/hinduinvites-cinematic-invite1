@@ -117,7 +117,7 @@ export function InvitationCover() {
 
       {/* Center content */}
       <div
-        className={`relative z-40 flex h-full flex-col items-center justify-center px-6 text-center transition-all duration-[1500ms] ${
+        className={`relative z-40 flex h-full w-full flex-col items-center justify-between px-4 sm:px-6 py-6 text-center transition-all duration-[1500ms] ${
           opening ? "scale-110 opacity-0 blur-sm" : mounted ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
         style={{
@@ -125,84 +125,105 @@ export function InvitationCover() {
           transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="h-px w-24 bg-gradient-to-r from-transparent via-marigold to-transparent" />
-          <span className="text-[10px] uppercase tracking-[0.6em] text-marigold">
-            {wedding.openingShlokaTranslit}
-          </span>
-          <span className="font-display text-2xl sm:text-3xl text-ivory">
-            {wedding.openingShloka}
-          </span>
+        {/* UPPER SECTION: Subtle Mantra / Shloka */}
+        <div className="flex-1 w-full flex flex-col justify-end items-center pb-6 sm:pb-8">
+          <div className="flex flex-col items-center gap-1.5 animate-reveal">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-marigold/50 to-transparent" />
+            <span className="text-[9px] uppercase tracking-[0.5em] text-marigold/80 font-medium">
+              {wedding.openingShlokaTranslit}
+            </span>
+            <span className="font-display text-lg sm:text-2xl text-ivory/95 tracking-[0.05em] mt-0.5">
+              {wedding.openingShloka}
+            </span>
+          </div>
         </div>
 
-        <div className="relative rounded-[2px] px-8 py-10 sm:px-14 sm:py-14 border border-marigold/30 bg-black/10 backdrop-blur-[2px] shadow-[0_0_60px_-10px_rgba(232,192,122,0.15)]">
-          {[
-            "top-0 left-0",
-            "top-0 right-0 rotate-90",
-            "bottom-0 right-0 rotate-180",
-            "bottom-0 left-0 -rotate-90",
-          ].map((pos) => (
-            <span
-              key={pos}
-              className={`absolute h-4 w-4 ${pos} border-t border-l border-marigold/60 m-[-1px]`}
+        {/* MIDDLE SECTION: Sacred Scratch Seal (Primary Focus) */}
+        {!opening ? (
+          <div className="flex-none relative my-2 flex justify-center items-center scale-100 sm:scale-105 transition-transform duration-500">
+            {/* Cinematic Radial Aura Glow under the seal */}
+            <div 
+              className="absolute z-0 bg-radial-glow opacity-75 pointer-events-none rounded-full blur-2xl animate-pulse"
+              style={{
+                background: "radial-gradient(circle, rgba(232,192,122,0.2) 0%, transparent 70%)",
+                width: '260px',
+                height: '260px',
+                animationDuration: '8s'
+              }}
             />
-          ))}
-
-          {/* Guest Personalization */}
-          {guest && (
-            <div className="mb-6 animate-reveal">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-marigold/60">
-                {side === "bride" ? "From the Bride's Family" : side === "groom" ? "From the Groom's Family" : "A Special Invitation for"}
-              </p>
-              <h2 className="mt-2 font-display text-2xl text-premium-gold italic">
-                {guest.includes("&") || guest.toLowerCase().includes("family") ? `Dear ${guest}` : `Welcome ${guest}`}
-              </h2>
-              <div className="mt-4 flex justify-center">
-                <div className="h-px w-8 bg-gradient-to-r from-transparent via-marigold/40 to-transparent" />
-              </div>
+            <div className="relative z-10">
+              <ScratchReveal onReveal={handleOpen} width={220} height={220} />
             </div>
-          )}
-
-          <p className="text-[10px] uppercase tracking-[0.6em] text-marigold opacity-80">
-            The Wedding of
-          </p>
-
-          <h1 className="mt-5 font-display text-5xl leading-[0.95] sm:text-6xl md:text-7xl text-premium-gold">
-            {wedding.brideName}
-            <span className="mx-3 inline-block italic text-marigold">
-              &
-            </span>
-            {wedding.groomName}
-          </h1>
-
-          <p className="mt-5 text-sm italic text-ivory/70">
-            {wedding.tagline}
-          </p>
-
-          <div className="mt-6 flex flex-col items-center gap-1">
-            <span className="text-[10px] uppercase tracking-[0.5em] text-marigold">
-              Save the Date
-            </span>
-            <span className="font-display text-xl sm:text-2xl text-ivory">
-              {wedding.weddingDateDisplay}
-            </span>
-            <span className="text-xs text-ivory/60">
-              {wedding.city}
-            </span>
           </div>
-        </div>
-
-        {/* Sacred Interaction System */}
-        {!opening && (
-          <div className="mt-12">
-            <ScratchReveal onReveal={handleOpen} width={200} height={200} />
-          </div>
+        ) : (
+          <div className="flex-none h-[220px] w-[220px]" />
         )}
 
-        <div className={`mt-6 flex flex-col items-center transition-opacity duration-1000 ${opening ? "opacity-0" : "opacity-100"}`}>
-          <span className="text-[9px] tracking-[0.4em] text-ivory/40 uppercase">
-            {wedding.hashtag}
-          </span>
+        {/* LOWER SECTION: Couple Details Card (framed elegantly beneath the seal) */}
+        <div className="flex-1 w-full flex flex-col justify-start items-center pt-6 sm:pb-8">
+          <div className="relative rounded-[2px] w-full max-w-[320px] sm:max-w-[420px] px-6 py-6 sm:px-10 sm:py-7 border border-marigold/30 bg-black/15 backdrop-blur-[3px] shadow-[0_0_60px_-10px_rgba(232,192,122,0.15)] transition-all duration-700">
+            {[
+              "top-0 left-0",
+              "top-0 right-0 rotate-90",
+              "bottom-0 right-0 rotate-180",
+              "bottom-0 left-0 -rotate-90",
+            ].map((pos) => (
+              <span
+                key={pos}
+                className={`absolute h-4 w-4 ${pos} border-t border-l border-marigold/60 m-[-1px]`}
+              />
+            ))}
+
+            {/* Guest Personalization */}
+            {guest && (
+              <div className="mb-3 animate-reveal">
+                <p className="text-[8px] uppercase tracking-[0.4em] text-marigold/60">
+                  {side === "bride" ? "From the Bride's Family" : side === "groom" ? "From the Groom's Family" : "A Special Invitation for"}
+                </p>
+                <h2 className="mt-1 font-display text-lg text-premium-gold italic">
+                  {guest.includes("&") || guest.toLowerCase().includes("family") ? `Dear ${guest}` : `Welcome ${guest}`}
+                </h2>
+                <div className="mt-2.5 flex justify-center">
+                  <div className="h-px w-6 bg-gradient-to-r from-transparent via-marigold/30 to-transparent" />
+                </div>
+              </div>
+            )}
+
+            <p className="text-[8px] uppercase tracking-[0.45em] text-marigold opacity-80">
+              The Wedding of
+            </p>
+
+            <h1 className="mt-2.5 font-display text-3xl leading-[1.05] sm:text-4xl md:text-5xl text-premium-gold">
+              {wedding.brideName}
+              <span className="mx-2.5 inline-block italic text-marigold text-2xl sm:text-3xl">
+                &
+              </span>
+              {wedding.groomName}
+            </h1>
+
+            <p className="mt-2.5 text-xs italic text-ivory/70 max-w-[280px] sm:max-w-md mx-auto">
+              {wedding.tagline}
+            </p>
+
+            <div className="mt-4 flex flex-col items-center gap-0.5">
+              <span className="text-[8px] uppercase tracking-[0.4em] text-marigold">
+                Save the Date
+              </span>
+              <span className="font-display text-base sm:text-lg text-ivory">
+                {wedding.weddingDateDisplay}
+              </span>
+              <span className="text-[10px] text-ivory/60">
+                {wedding.city}
+              </span>
+            </div>
+          </div>
+
+          {/* Hashtag underneath Details Card */}
+          <div className={`mt-4 flex flex-col items-center transition-opacity duration-1000 ${opening ? "opacity-0" : "opacity-100"}`}>
+            <span className="text-[8px] tracking-[0.35em] text-ivory/35 uppercase">
+              {wedding.hashtag}
+            </span>
+          </div>
         </div>
       </div>
 

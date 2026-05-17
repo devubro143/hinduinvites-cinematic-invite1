@@ -358,7 +358,7 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
           ? ""
           : dateRevealed
             ? "Keep revealing to open the invitation…"
-            : "Gently trace to break the seal"}
+            : "Gently Scratch to Open your Invitation"}
       </p>
     </div>
   );
