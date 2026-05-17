@@ -23,6 +23,7 @@ export function InvitationCover() {
   }, [loaderFinished]);
 
   const [blessingDone, setBlessingDone] = useState(false);
+  const [ganeshaLoaded, setGaneshaLoaded] = useState(false);
   const [opening, setOpening] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -125,8 +126,8 @@ export function InvitationCover() {
           transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {/* UPPER SECTION: Subtle Mantra / Shloka */}
-        <div className="flex-1 w-full flex flex-col justify-end items-center pb-6 sm:pb-8">
+        {/* UPPER SECTION: Subtle Mantra & Lord Ganesha Blessing */}
+        <div className="flex-1 w-full flex flex-col justify-end items-center pb-4 sm:pb-6">
           <div className="flex flex-col items-center gap-1.5 animate-reveal">
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-marigold/50 to-transparent" />
             <span className="text-[9px] uppercase tracking-[0.5em] text-marigold/80 font-medium">
@@ -135,6 +136,46 @@ export function InvitationCover() {
             <span className="font-display text-lg sm:text-2xl text-ivory/95 tracking-[0.05em] mt-0.5">
               {wedding.openingShloka}
             </span>
+          </div>
+
+          {/* Lord Ganesha Image Container with Loader */}
+          <div className="relative mt-3 sm:mt-4 flex items-center justify-center h-[95px] sm:h-[130px] w-[95px] sm:w-[130px]">
+            {/* Subtle Gold Aura Glow behind Ganesha */}
+            <div 
+              className={`absolute pointer-events-none rounded-full blur-xl opacity-60 transition-opacity duration-1000 ${ganeshaLoaded ? 'animate-pulse' : ''}`}
+              style={{
+                width: "120px",
+                height: "120px",
+                background: "radial-gradient(circle, rgba(232,192,122,0.12) 0%, transparent 70%)",
+                animationDuration: "6s"
+              }}
+            />
+
+            {/* Sacred Gold Circular Loader (Renders while image is loading) */}
+            {!ganeshaLoaded && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center animate-pulse">
+                {/* Thin golden spinning ornamental circle */}
+                <div 
+                  className="w-10 h-10 rounded-full border border-marigold/15 border-t-marigold/70 animate-spin" 
+                  style={{ animationDuration: '2.5s' }}
+                />
+                {/* Tiny central golden spark */}
+                <div className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-marigold to-premium-gold shadow-[0_0_8px_var(--marigold)]" />
+                <span className="text-[6.5px] tracking-[0.25em] uppercase text-marigold/45 mt-2 absolute -bottom-5">
+                  Blessing...
+                </span>
+              </div>
+            )}
+
+            <img
+              src={wedding.blessingImage}
+              alt="Lord Ganesha"
+              onLoad={() => setGaneshaLoaded(true)}
+              className={`w-[95px] sm:w-[130px] object-contain drop-shadow-[0_0_20px_rgba(232,192,122,0.08)] relative z-10 transition-all duration-[1500ms] ease-out scale-95 hover:scale-100 ${
+                ganeshaLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
+              }`}
+              loading="eager"
+            />
           </div>
         </div>
 
