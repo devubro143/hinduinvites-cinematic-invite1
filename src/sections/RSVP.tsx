@@ -239,13 +239,71 @@ export function RSVP() {
 
       // 2. Submit to Telegram channel if enabled
       if (config.telegram?.enabled && config.telegram.botToken && config.telegram.chatId) {
-        let msgText = config.telegram.customMessageTemplate || 
-          "✨ *New RSVP Received* ✨\n\n👤 *Name:* {name}\n👥 *Guests:* {count}\n💌 *Message:* {message}";
+        const selectedEventTitles = wedding.events
+          .filter((ev: any) => form.selectedEvents.includes(ev.id))
+          .map((ev: any) => ev.title);
+
+        // Format received date/time elegantly
+        const now = new Date();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const formattedDate = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
         
-        msgText = msgText
-          .replace("{name}", payload.guestName)
-          .replace("{count}", String(payload.guestsCount))
-          .replace("{message}", payload.message);
+        let hours = now.getHours();
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        const minutes = now.getMinutes();
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+        const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
+
+        let msgText = "";
+
+        if (isAttending) {
+          const eventsList = selectedEventTitles.length
+            ? selectedEventTitles.map((t: string) => `• ${t}`).join("\n")
+            : "• None Selected";
+
+          msgText = [
+            "👑 *NEW ROYAL RSVP RECEIVED*",
+            "",
+            "✨ *Guest:*",
+            payload.guestName,
+            "",
+            "📞 *Phone:*",
+            form.phone || "Not Provided",
+            "",
+            "👥 *Guests Attending:*",
+            String(payload.guestsCount),
+            "",
+            "🎟 *Category:*",
+            form.category,
+            "",
+            "🌸 *Celebrations:*",
+            eventsList,
+            "",
+            "💌 *Blessings:*",
+            `“${form.message || "None"}”`,
+            "",
+            "⏰ *Received:*",
+            `${formattedDate} • ${formattedTime}`
+          ].join("\n");
+        } else {
+          msgText = [
+            "🌙 *RSVP UPDATE*",
+            "",
+            "*Guest:*",
+            payload.guestName,
+            "",
+            "*Status:*",
+            "Regretfully Declining",
+            "",
+            "💌 *Blessings:*",
+            `“${form.message || "None"}”`,
+            "",
+            "⏰ *Received:*",
+            `${formattedDate} • ${formattedTime}`
+          ].join("\n");
+        }
 
         const tgUrl = `https://api.telegram.org/bot${config.telegram.botToken}/sendMessage`;
         await fetch(tgUrl, {
