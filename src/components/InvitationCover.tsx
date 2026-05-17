@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { wedding } from "@/config/wedding";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ScratchReveal } from "./ScratchReveal";
+import { GaneshaBlessing } from "./GaneshaBlessing";
 import { useInvitationParams } from "@/hooks/useInvitationParams";
 
 export function InvitationCover() {
   const { guest, side } = useInvitationParams();
   const isReducedMotion = useReducedMotion();
+  const [blessingDone, setBlessingDone] = useState(false);
   const [opening, setOpening] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -19,6 +21,10 @@ export function InvitationCover() {
     };
   }, []);
 
+  const handleBlessingComplete = useCallback(() => {
+    setBlessingDone(true);
+  }, []);
+
   const handleOpen = () => {
     if (opening) return;
     setOpening(true);
@@ -28,6 +34,13 @@ export function InvitationCover() {
   };
 
   if (hidden) return null;
+
+  // Phase 1: Blessing sequence
+  if (!blessingDone) {
+    return <GaneshaBlessing onComplete={handleBlessingComplete} />;
+  }
+
+  // Phase 2: Scratch reveal + cover (existing flow, untouched)
 
   return (
     <div
