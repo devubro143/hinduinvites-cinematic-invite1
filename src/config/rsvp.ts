@@ -96,7 +96,7 @@ export interface RSVPConfig {
 export const rsvpConfig: RSVPConfig = {
   enabled: true,
   // Insert your deployed Google Apps Script Web App URL here
-  appsScriptUrl: "https://script.google.com/macros/s/AKfycbw6Nl-T8_uH4c8nQ1WjJ0_5sXW4_RsvpPlaceholder/exec",
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbwXj15C6smbhQHao2Ei0rGLhKVKLgcW5KDJibr252kr4mWBcNpb-1gAglVtHGU61-mUYg/exec",
   labels: {
     eyebrow: "RSVP",
     title: "Will you join us?",
