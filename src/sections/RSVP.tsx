@@ -15,7 +15,22 @@ export function RSVP() {
   const [submissionStep, setSubmissionStep] = useState<"idle" | "submitting" | "confirmed" | "error">("idle");
   const [loadingIndex, setLoadingIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", count: 1, message: "" });
+
+  // Initialize bridal names and default blessing templates dynamically
+  const brideName = wedding.bride?.name || "Bride";
+  const groomName = wedding.groom?.name || "Groom";
+  const defaultBlessing = `Congratulations ${brideName} & ${groomName} ✨\nWishing you both a lifetime filled with love, happiness, and togetherness.`;
+
+  const [form, setForm] = useState({
+    attendance: "attending" as "attending" | "declining",
+    name: "",
+    phone: "",
+    category: "Friends",
+    count: 1,
+    attendingAllEvents: true,
+    selectedEvents: [] as string[],
+    message: defaultBlessing,
+  });
   
   // Dynamic particle states
   const [particles, setParticles] = useState<{ id: number; left: string; size: string; delay: string; duration: string; driftX: string }[]>([]);
@@ -28,11 +43,17 @@ export function RSVP() {
       .then((m) => {
         const loadedConfig = m.default || m;
         setConfig(loadedConfig);
+        
+        // Populate events from config or wedding settings
+        const allEventIds = wedding.events.map((e: any) => e.id);
+        
         // Apply configured default guest count if available
         const limit = loadedConfig.guestLimit;
-        if (limit?.default) {
-          setForm((prev) => ({ ...prev, count: limit.default }));
-        }
+        setForm((prev) => ({ 
+          ...prev, 
+          count: limit?.default || 1,
+          selectedEvents: allEventIds
+        }));
       })
       .catch((err) => {
         console.error("Failed to dynamically load RSVP configuration:", err);
@@ -45,7 +66,7 @@ export function RSVP() {
     if (submissionStep === "submitting") {
       interval = setInterval(() => {
         setLoadingIndex((prev) => (prev + 1) % buttonLoadingPhrases.length);
-      }, 1000); // Steady, emotional 1.0s pacing
+      }, 1000);
     } else {
       setLoadingIndex(0);
     }
@@ -58,9 +79,9 @@ export function RSVP() {
       const newParticles = Array.from({ length: 28 }).map((_, i) => ({
         id: i,
         left: `${Math.random() * 100}%`,
-        size: `${Math.random() * 5 + 3}px`, // 3px to 8px golden embers
+        size: `${Math.random() * 5 + 3}px`,
         delay: `${Math.random() * 4}s`,
-        duration: `${Math.random() * 6 + 5}s`, // 5s to 11s slow drift
+        duration: `${Math.random() * 6 + 5}s`,
         driftX: `${(Math.random() - 0.5) * 120}px`,
       }));
       setParticles(newParticles);
@@ -74,8 +95,8 @@ export function RSVP() {
     if (submissionStep === "submitting") {
       const list = Array.from({ length: 10 }).map((_, i) => ({
         id: i,
-        left: `${15 + Math.random() * 70}%`, // spawn inside the central region
-        size: `${Math.random() * 3 + 1.5}px`, // tiny 1.5px to 4.5px specks
+        left: `${15 + Math.random() * 70}%`,
+        size: `${Math.random() * 3 + 1.5}px`,
         delay: `${Math.random() * 1.5}s`,
         duration: `${Math.random() * 1.2 + 0.8}s`,
       }));
@@ -90,15 +111,15 @@ export function RSVP() {
     if (submissionStep === "confirmed") {
       const burst = Array.from({ length: 32 }).map((_, i) => {
         const angle = (i / 32) * 2 * Math.PI + (Math.random() - 0.5) * 0.15;
-        const velocity = Math.random() * 150 + 70; // gold embers explosion force
+        const velocity = Math.random() * 150 + 70;
         const driftX = `${Math.cos(angle) * velocity}px`;
-        const driftY = `${Math.sin(angle) * velocity + 50}px`; // curved under soft gravity
+        const driftY = `${Math.sin(angle) * velocity + 50}px`;
         return {
           id: i,
           driftX,
           driftY,
           delay: `${Math.random() * 0.18}s`,
-          duration: `${Math.random() * 1.6 + 1.2}s`, // 1.2s to 2.8s fade out
+          duration: `${Math.random() * 1.6 + 1.2}s`,
         };
       });
       setBurstParticles(burst);
@@ -111,6 +132,36 @@ export function RSVP() {
   const isEnabled = config ? config.enabled : wedding.rsvp.enabled;
   if (!isEnabled) return null;
 
+  // Toggle single event chip selections
+  const handleEventChipToggle = (eventId: string) => {
+    if (form.attendingAllEvents) {
+      setForm((prev) => ({
+        ...prev,
+        attendingAllEvents: false,
+        selectedEvents: [eventId],
+      }));
+    } else {
+      setForm((prev) => {
+        const isSelected = prev.selectedEvents.includes(eventId);
+        let nextSelected: string[] = [];
+        if (isSelected) {
+          nextSelected = prev.selectedEvents.filter((id: string) => id !== eventId);
+        } else {
+          nextSelected = [...prev.selectedEvents, eventId];
+        }
+        
+        const allEventIds = wedding.events.map((e: any) => e.id);
+        const allSelected = allEventIds.every((id: string) => nextSelected.includes(id));
+
+        return {
+          ...prev,
+          selectedEvents: nextSelected,
+          attendingAllEvents: allSelected,
+        };
+      });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!config || submissionStep !== "idle") return;
@@ -118,17 +169,36 @@ export function RSVP() {
     setSubmissionStep("submitting");
     setError(null);
 
+    const isAttending = form.attendance === "attending";
+    const selectedEventTitles = wedding.events
+      .filter((ev: any) => form.selectedEvents.includes(ev.id))
+      .map((ev: any) => ev.title);
+
+    // Build highly detailed structured composite message matching existing sheets column structure
+    const compositeMessage = [
+      `[Status: ${isAttending ? "✨ Joyfully Attending" : "🌙 Regretfully Declining"}]`,
+      `Phone: ${form.phone}`,
+      `Category: ${form.category}`,
+      isAttending ? `Events: ${selectedEventTitles.length ? selectedEventTitles.join(", ") : "None Selected"}` : null,
+      "",
+      "Blessing Message:",
+      form.message || "None"
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     const payload = {
-      ...form,
+      guestName: form.name,
+      guestsCount: isAttending ? form.count : 0,
+      message: compositeMessage,
       timestamp: new Date().toISOString(),
       coupleId: wedding.coupleId || "default",
     };
 
     try {
-      let isAppsScriptSuccess = false;
       const isPlaceholder = config.appsScriptUrl.includes("RsvpPlaceholder");
 
-      // 1. Submit to Google Apps Script Web App using exact JSON body and no-cors mode to bypass CORS issues
+      // 1. Submit JSON in text/plain format with mode: 'no-cors' to prevent Google Apps Script CORS preflight blocks
       if (config.appsScriptUrl && !isPlaceholder) {
         await fetch(config.appsScriptUrl, {
           method: "POST",
@@ -137,23 +207,22 @@ export function RSVP() {
             "Content-Type": "text/plain",
           },
           body: JSON.stringify({
-            guestName: form.name,
-            guestsCount: form.count,
-            message: form.message,
+            guestName: payload.guestName,
+            guestsCount: payload.guestsCount,
+            message: payload.message,
           }),
         });
-        isAppsScriptSuccess = true;
       }
 
-      // 2. Submit to Telegram channel/group if enabled and tokens are set
+      // 2. Submit to Telegram channel if enabled
       if (config.telegram?.enabled && config.telegram.botToken && config.telegram.chatId) {
         let msgText = config.telegram.customMessageTemplate || 
           "✨ *New RSVP Received* ✨\n\n👤 *Name:* {name}\n👥 *Guests:* {count}\n💌 *Message:* {message}";
         
         msgText = msgText
-          .replace("{name}", form.name)
-          .replace("{count}", String(form.count))
-          .replace("{message}", form.message || "None");
+          .replace("{name}", payload.guestName)
+          .replace("{count}", String(payload.guestsCount))
+          .replace("{message}", payload.message);
 
         const tgUrl = `https://api.telegram.org/bot${config.telegram.botToken}/sendMessage`;
         await fetch(tgUrl, {
@@ -174,28 +243,32 @@ export function RSVP() {
         const eventName = config.analytics.eventName || "RSVP_Submission";
         if ((window as any).gtag) {
           (window as any).gtag("event", eventName, {
-            guest_name: form.name,
-            guest_count: form.count,
+            guest_name: payload.guestName,
+            guest_count: payload.guestsCount,
           });
         }
         const customEvent = new CustomEvent(eventName, { detail: payload });
         window.dispatchEvent(customEvent);
       }
 
-      // Let the luxury loading sequences and golden environments breathe deeply
+      // Ensure emotional anticipation loading animation breathes deeply
       await new Promise((resolve) => setTimeout(resolve, 3200));
 
-      // Step 6: Clean form reset logic
+      // Reset form states cleanly
       setForm({
+        attendance: "attending",
         name: "",
+        phone: "",
+        category: "Friends",
         count: config?.guestLimit?.default ?? 1,
-        message: ""
+        attendingAllEvents: true,
+        selectedEvents: wedding.events.map((ev: any) => ev.id),
+        message: defaultBlessing,
       });
 
       setSubmissionStep("confirmed");
     } catch (err: any) {
       console.error("RSVP Submission failed:", err);
-      // Step 5: Elegant subtle error state from config or template fallback
       setError(config?.errorMessage || "Unable to send blessings right now.");
       setSubmissionStep("error");
     }
@@ -210,7 +283,6 @@ export function RSVP() {
     guestsLabel: config?.labels?.guestsLabel ?? "Number of Guests",
     messageLabel: config?.labels?.messageLabel ?? "A Blessing or Message",
     messagePlaceholder: config?.labels?.messagePlaceholder ?? "Share your wishes for our new beginning...",
-    submitButton: config?.labels?.submitButton ?? "Accept Invitation",
   };
 
   const deadlineText = config?.labels?.deadlineMessage
@@ -376,7 +448,7 @@ export function RSVP() {
         />
 
         <div 
-          className="mx-auto mt-12 max-w-xl rounded-3xl border bg-gradient-to-b from-maroon-deep/20 to-black/65 p-8 shadow-elegant sm:p-10 backdrop-blur-md transition-all duration-1000 ease-out hover:border-marigold/35 relative overflow-hidden"
+          className="mx-auto mt-12 max-w-xl rounded-3xl border bg-gradient-to-b from-maroon-deep/20 to-black/65 p-6 shadow-elegant sm:p-10 backdrop-blur-md transition-all duration-1000 ease-out hover:border-marigold/35 relative overflow-hidden"
           style={{
             borderColor: (submissionStep === "submitting" || submissionStep === "confirmed") ? "rgba(232, 192, 122, 0.45)" : (submissionStep === "error") ? "rgba(239, 68, 68, 0.35)" : "rgba(232, 192, 122, 0.2)",
             boxShadow: (submissionStep === "submitting" || submissionStep === "confirmed") ? "0 25px 60px rgba(92, 32, 24, 0.45), 0 0 35px rgba(232, 192, 122, 0.2)" : (submissionStep === "error") ? "0 20px 50px rgba(239, 68, 68, 0.15)" : "var(--shadow-elegant)",
@@ -406,6 +478,7 @@ export function RSVP() {
                 ))}
               </div>
 
+              {/* Envelope Seal Animation Container */}
               <div 
                 className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-marigold/30 bg-maroon-deep/40 text-marigold luxury-gold-glow mb-2 relative z-10"
                 style={{
@@ -416,7 +489,7 @@ export function RSVP() {
               </div>
               
               <h3 className="font-display text-2xl leading-relaxed text-slate-100 luxury-shimmer-text px-2">
-                ✨ Your blessings have been received ✨
+                Your blessings have gracefully reached the family ✨
               </h3>
               
               <p className="text-sm sm:text-base text-ivory/90 leading-relaxed max-w-sm mx-auto font-body italic tracking-wide px-4">
@@ -426,7 +499,6 @@ export function RSVP() {
               <div className="divider-ornament opacity-40 max-w-[150px] mx-auto mt-4" />
             </div>
           ) : submissionStep === "error" ? (
-            /* Step 5: Elegant subtle error state screen */
             <div className="text-center py-8 space-y-6 cinematic-reveal-slow relative z-10 animate-reveal">
               <div 
                 className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-red-500/25 bg-red-950/20 text-red-400 mb-2 relative z-10"
@@ -466,36 +538,179 @@ export function RSVP() {
                 filter: submissionStep === "submitting" ? "blur(1px)" : "none",
               }}
             >
-              <Field label={labels.nameLabel}>
-                <input
-                  required
-                  type="text"
-                  placeholder={labels.namePlaceholder}
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/20 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
-                />
-              </Field>
-              
-              <Field label={labels.guestsLabel}>
-                <input
-                  required
-                  type="number"
-                  min={minGuests}
-                  max={maxGuests}
-                  value={form.count}
-                  onChange={(e) => setForm({ ...form, count: +e.target.value })}
-                  className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
-                />
-              </Field>
+              {/* SECTION 1 — ATTENDANCE CONFIRMATION (Segmented Controls) */}
+              <div className="grid grid-cols-2 gap-3 mb-6 p-1 bg-black/45 rounded-xl border border-marigold/10 relative overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, attendance: "attending" }))}
+                  className={`rounded-lg py-3 px-4 text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 flex flex-col items-center justify-center gap-1 active:scale-95 ${
+                    form.attendance === "attending"
+                      ? "bg-gradient-to-r from-maroon-deep to-accent/90 border border-marigold/40 text-ivory shadow-[0_0_15px_rgba(232,192,122,0.2)] font-semibold"
+                      : "bg-transparent border border-transparent text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  <span className="text-xs">✨</span>
+                  <span>Joyfully Attending</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, attendance: "declining" }))}
+                  className={`rounded-lg py-3 px-4 text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 flex flex-col items-center justify-center gap-1 active:scale-95 ${
+                    form.attendance === "declining"
+                      ? "bg-gradient-to-r from-[#200508] to-[#0c010d] border border-red-500/30 text-slate-200 shadow-[0_0_15px_rgba(239,68,68,0.1)] font-semibold"
+                      : "bg-transparent border border-transparent text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  <span className="text-xs">🌙</span>
+                  <span>Regretfully Declining</span>
+                </button>
+              </div>
 
+              {/* SECTION 2 — GUEST DETAILS */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label={labels.nameLabel}>
+                    <input
+                      required
+                      type="text"
+                      placeholder={labels.namePlaceholder}
+                      value={form.name}
+                      onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+                      className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/20 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
+                    />
+                  </Field>
+
+                  <Field label="Phone Number">
+                    <input
+                      required
+                      type="tel"
+                      pattern="[0-9]*"
+                      inputMode="numeric"
+                      placeholder="Enter mobile number"
+                      value={form.phone}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setForm((prev) => ({ ...prev, phone: val }));
+                      }}
+                      className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/20 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
+                    />
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Guest Category">
+                    <div className="relative">
+                      <select
+                        value={form.category}
+                        onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
+                        className="w-full appearance-none rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/20 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300 pr-10"
+                      >
+                        <option value="Bride Side Family" className="bg-[#0c040d] text-slate-100">Bride Side Family</option>
+                        <option value="Groom Side Family" className="bg-[#0c040d] text-slate-100">Groom Side Family</option>
+                        <option value="Friends" className="bg-[#0c040d] text-slate-100">Friends</option>
+                        <option value="Neighbours" className="bg-[#0c040d] text-slate-100">Neighbours</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-marigold">
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </Field>
+
+                  {form.attendance === "attending" && (
+                    <Field label={labels.guestsLabel}>
+                      <input
+                        required
+                        type="number"
+                        min={minGuests}
+                        max={maxGuests}
+                        value={form.count}
+                        onChange={(e) => setForm((prev) => ({ ...prev, count: +e.target.value }))}
+                        className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
+                      />
+                    </Field>
+                  )}
+                </div>
+              </div>
+
+              {/* SECTION 3 — EVENT ATTENDANCE (Expandable conditional on joyfully attending) */}
+              {form.attendance === "attending" && (
+                <div className="space-y-4 pt-2 transition-all duration-500 ease-in-out">
+                  <label className="block text-left">
+                    <span className="block text-[10px] uppercase tracking-[0.25em] text-marigold/95 font-semibold mb-2">
+                      Event Attendance
+                    </span>
+                    
+                    {/* Attending All Toggle Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForm((prev) => {
+                          const nextAttendingAll = !prev.attendingAllEvents;
+                          return {
+                            ...prev,
+                            attendingAllEvents: nextAttendingAll,
+                            selectedEvents: nextAttendingAll ? wedding.events.map((ev: any) => ev.id) : [],
+                          };
+                        });
+                      }}
+                      className={`w-full rounded-lg border py-2.5 px-4 text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-between ${
+                        form.attendingAllEvents
+                          ? "bg-marigold/10 border-marigold text-marigold shadow-[0_0_12px_rgba(232,192,122,0.15)] font-semibold"
+                          : "bg-[#0c040d]/50 border-marigold/20 text-slate-300 hover:border-marigold/50"
+                      }`}
+                    >
+                      <span>✨ Attending All Celebrations</span>
+                      <span className="text-[10px] tracking-widest opacity-80">
+                        {form.attendingAllEvents ? "ACTIVE" : "SELECTIVE"}
+                      </span>
+                    </button>
+                  </label>
+
+                  {/* 2-column event responsive chips */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {wedding.events.map((e: any) => {
+                      const isSelected = form.selectedEvents.includes(e.id);
+                      return (
+                        <button
+                          key={e.id}
+                          type="button"
+                          onClick={() => handleEventChipToggle(e.id)}
+                          className={`relative rounded-full py-2.5 px-3 text-[9px] sm:text-[10px] uppercase tracking-widest border transition-all duration-300 overflow-hidden active:scale-95 ${
+                            isSelected
+                              ? "bg-gradient-to-r from-maroon-deep to-accent/90 border-marigold text-ivory shadow-[0_0_10px_rgba(232,192,122,0.15)] font-semibold"
+                              : "bg-[#0c040d]/40 border-marigold/10 text-slate-400 hover:border-marigold/30 hover:text-slate-200"
+                          }`}
+                        >
+                          <span className="relative z-10 flex items-center justify-center gap-1">
+                            <span>{e.icon}</span>
+                            <span>{e.title}</span>
+                          </span>
+                          {isSelected && (
+                            <div 
+                              className="absolute top-0 left-0 w-[50%] h-full pointer-events-none"
+                              style={{
+                                background: "linear-gradient(90deg, transparent, rgba(232, 192, 122, 0.15), transparent)",
+                                animation: "button-sweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+                              }}
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION 4 — BLESSINGS */}
               <Field label={labels.messageLabel}>
                 <textarea
                   rows={4}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
                   placeholder={labels.messagePlaceholder}
-                  className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/25 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300"
+                  className="w-full rounded-lg border border-marigold/20 bg-[#0c040d]/70 px-4 py-3 text-slate-100 placeholder-white/25 outline-none ring-marigold/20 focus:border-marigold focus:ring-2 transition-all duration-300 text-sm sm:text-base leading-relaxed"
                 />
               </Field>
 
@@ -505,10 +720,11 @@ export function RSVP() {
                 </div>
               )}
 
+              {/* SECTION 5 — FINAL SUBMIT EXPERIENCE */}
               <button
                 type="submit"
                 disabled={submissionStep !== "idle"}
-                className={`w-full rounded-full px-8 py-4 text-xs uppercase tracking-[0.3em] text-ivory border shadow-soft font-semibold transition-all duration-1000 relative overflow-hidden active:scale-95 ${
+                className={`w-full rounded-full px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-ivory border shadow-soft font-semibold transition-all duration-1000 relative overflow-hidden active:scale-95 ${
                   submissionStep === "submitting"
                     ? "max-w-[85%] mx-auto bg-gradient-to-r from-[#200508] to-[#0c010d] border-marigold/45 shadow-[0_0_25px_rgba(232,192,122,0.35)] cursor-not-allowed button-pulse-active"
                     : "bg-gradient-to-r from-maroon-deep via-accent to-maroon-deep border-marigold/30 hover:scale-[1.01] hover:border-marigold hover:shadow-[0_0_20px_rgba(232,192,122,0.25)]"
@@ -550,7 +766,7 @@ export function RSVP() {
                       {buttonLoadingPhrases[loadingIndex]}
                     </span>
                   ) : (
-                    labels.submitButton
+                    form.attendance === "attending" ? "Confirm Royal Attendance ✨" : "Send Your Blessings"
                   )}
                 </span>
               </button>
