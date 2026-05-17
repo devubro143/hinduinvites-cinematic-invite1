@@ -9,6 +9,7 @@ import { Video } from "@/sections/Video";
 import { Family } from "@/sections/Family";
 import { Location } from "@/sections/Location";
 import { RSVP } from "@/sections/RSVP";
+import { MemoryVault } from "@/sections/MemoryVault";
 import { Footer } from "@/sections/Footer";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { InvitationCover } from "@/components/InvitationCover";
@@ -42,6 +43,7 @@ function Index() {
       <Family />
       <Location />
       <RSVP />
+      <MemoryVault />
       <Footer />
       <MusicPlayer />
     </main>
