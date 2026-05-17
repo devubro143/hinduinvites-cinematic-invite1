@@ -82,36 +82,42 @@ export function MusicPlayer() {
     };
   }, [music.enabled, music.src]);
 
-  // 2. Listen for Invitation Open
+  // 2. Listen for User Interaction / Invitation Open to Play Audio (Autoplay bypass)
   useEffect(() => {
-    const handleInvitationOpen = () => {
-      setHasOpened(true);
-      if (!audioRef.current) return;
-      
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-        fadeIn();
-      }).catch(err => console.warn("Music play blocked:", err));
-    };
+    if (!music.enabled || !music.src) return;
 
-    const handleUnlock = () => {
-      if (!audioRef.current) return;
-      
+    const playAndUnlock = () => {
+      if (!audioRef.current || hasOpened) return;
+
       audioRef.current.play().then(() => {
         setHasOpened(true);
         setIsPlaying(true);
         fadeIn();
-      }).catch(err => console.warn("Music pre-play/unlock blocked:", err));
+        cleanup();
+      }).catch(err => {
+        console.warn("Audio unlock failed, waiting for next gesture:", err);
+      });
     };
 
-    window.addEventListener("invitation:opened", handleInvitationOpen);
-    window.addEventListener("music:unlock", handleUnlock);
-    
-    return () => {
-      window.removeEventListener("invitation:opened", handleInvitationOpen);
-      window.removeEventListener("music:unlock", handleUnlock);
+    const cleanup = () => {
+      window.removeEventListener("invitation:opened", playAndUnlock);
+      window.removeEventListener("music:unlock", playAndUnlock);
+      window.removeEventListener("touchstart", playAndUnlock, { capture: true });
+      window.removeEventListener("mousedown", playAndUnlock, { capture: true });
+      window.removeEventListener("click", playAndUnlock, { capture: true });
     };
-  }, [music.defaultVolume]);
+
+    // Custom events from invitation flow
+    window.addEventListener("invitation:opened", playAndUnlock);
+    window.addEventListener("music:unlock", playAndUnlock);
+
+    // Direct trusted browser gestures (iOS / Android / Safari / Chrome compatible)
+    window.addEventListener("touchstart", playAndUnlock, { capture: true, passive: true });
+    window.addEventListener("mousedown", playAndUnlock, { capture: true, passive: true });
+    window.addEventListener("click", playAndUnlock, { capture: true, passive: true });
+
+    return () => cleanup();
+  }, [hasOpened, music.enabled, music.src, music.defaultVolume]);
 
   // 3. Handle Visibility Change (Pause/Resume)
   useEffect(() => {
