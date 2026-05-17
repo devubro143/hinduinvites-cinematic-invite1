@@ -128,17 +128,17 @@
     "bride": {
       "title": "The Sharmas",
       "members": [
-        { "role": "FATHER", "name": "Shri Ajay Sharma", "image": "bride_father.jpg" },
-        { "role": "MOTHER", "name": "Smt. Ashima Sharma", "image": "bride_mother.jpg" },
-        { "role": "BROTHER", "name": "Rohan Sharma", "image": "bride_brother.jpg" }
+        { "role": "FATHER", "name": "Shri Ajay Sharma", "image": "family/bride_father.jpg" },
+        { "role": "MOTHER", "name": "Smt. Ashima Sharma", "image": "family/bride_mother.jpg" },
+        { "role": "BROTHER", "name": "Rohan Sharma", "image": "family/bride_brother.jpg" }
       ]
     },
     "groom": {
       "title": "The Kohlis",
       "members": [
-        { "role": "FATHER", "name": "Late Shri Prem Nath Kohli", "image": "groom_father.jpg" },
-        { "role": "MOTHER", "name": "Smt. Saroj Kohli", "image": "groom_mother.jpg" },
-        { "role": "BROTHER", "name": "Vikas Kohli", "image": "groom_brother.jpg" }
+        { "role": "FATHER", "name": "Late Shri Prem Nath Kohli", "image": "family/groom_father.jpg" },
+        { "role": "MOTHER", "name": "Smt. Saroj Kohli", "image": "family/groom_mother.jpg" },
+        { "role": "BROTHER", "name": "Vikas Kohli", "image": "family/groom_brother.jpg" }
       ]
     }
   },
