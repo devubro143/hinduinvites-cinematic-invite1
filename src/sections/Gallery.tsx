@@ -5,24 +5,28 @@ import { CinematicImage } from "@/components/CinematicImage";
 
 export const Gallery = memo(function Gallery() {
   const { row1, row2 } = useMemo(() => {
-    // Extract unique images to prevent identical vertical/horizontal pairs
+    // 1. Extract unique images
     const uniqueImgs = Array.from(new Set(wedding.gallery));
     
-    // Fisher-Yates shuffle to randomize the gallery order on load
-    const shuffled = [...uniqueImgs];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    
-    const len = shuffled.length;
-    // Calculate mid-point shift to mathematically prevent identical vertical columns
-    const shift = Math.floor(len / 2) || 1;
-    
-    const row1 = [...shuffled];
-    const row2 = Array.from({ length: len }, (_, i) => shuffled[(i + shift) % len]);
-    
-    return { row1, row2 };
+    // 2. Deterministic Hash-Sort (Prevents React Hydration Mismatches between Server and Client)
+    const sorted = [...uniqueImgs].sort((a, b) => {
+      let hashA = 0, hashB = 0;
+      for (let i = 0; i < a.length; i++) hashA = a.charCodeAt(i) + ((hashA << 5) - hashA);
+      for (let i = 0; i < b.length; i++) hashB = b.charCodeAt(i) + ((hashB << 5) - hashB);
+      return hashA - hashB;
+    });
+
+    // 3. Split unique images into completely disjoint sets (Row 1 and Row 2 have ZERO common images)
+    // This mathematically guarantees that identical images will never align vertically when counter-scrolling!
+    const mid = Math.ceil(sorted.length / 2);
+    const set1 = sorted.slice(0, mid);
+    const set2 = sorted.slice(mid);
+
+    // Fallback in case unique set is too small to split
+    const finalSet1 = set1.length > 0 ? set1 : sorted;
+    const finalSet2 = set2.length > 0 ? set2 : sorted;
+
+    return { row1: finalSet1, row2: finalSet2 };
   }, []);
 
   return (
@@ -36,24 +40,35 @@ export const Gallery = memo(function Gallery() {
       </div>
 
       <div className="mt-16 space-y-6">
-        <MarqueeRow images={[...row1, ...row1]} direction="left" />
-        <MarqueeRow images={[...row2, ...row2]} direction="right" />
+        {/* 4. Repeat exactly 4 times (Even multiplier guarantees a perfectly seamless -50% CSS marquee loop) */}
+        {/* We pass customized animation durations to create a high-end parallax effect */}
+        <MarqueeRow images={[...row1, ...row1, ...row1, ...row1]} direction="left" duration="48s" />
+        <MarqueeRow images={[...row2, ...row2, ...row2, ...row2]} direction="right" duration="64s" />
       </div>
     </section>
   );
 });
 
-function MarqueeRow({ images, direction }: { images: string[]; direction: "left" | "right" }) {
+function MarqueeRow({ 
+  images, 
+  direction, 
+  duration 
+}: { 
+  images: string[]; 
+  direction: "left" | "right"; 
+  duration: string;
+}) {
   return (
     <div className="relative w-full overflow-hidden">
       <div
         className={`flex w-max gap-6 ${
           direction === "left" ? "animate-marquee-left" : "animate-marquee-right"
         }`}
+        style={{ animationDuration: duration }}
       >
         {images.map((src, i) => (
           <figure
-            key={i}
+            key={`${src}-${i}`} // Stable, unique key for optimal React reconciliation
             className="relative h-64 w-80 shrink-0 overflow-hidden rounded-2xl shadow-soft sm:h-80 sm:w-96"
           >
             <CinematicImage
