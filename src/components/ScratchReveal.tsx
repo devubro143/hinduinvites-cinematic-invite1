@@ -25,6 +25,7 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
   const sparklesRef = useRef<Sparkle[]>([]);
   const sparkleCanvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
+  const lastCheckTime = useRef<number>(0); // Added to throttle pixel scanning for buttery-smooth FPS
 
   const [isRevealed, setIsRevealed] = useState(false);
   const [dateRevealed, setDateRevealed] = useState(false);
@@ -341,8 +342,8 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
       }
     }
 
-    // Phase 2: At 50%+, trigger full cinematic reveal
-    if (pct > 50) {
+    // Phase 2: Open at 30%-70% scratch range (Trigger reveal dynamically at 35% for incredibly smooth cinematic transition!)
+    if (pct > 35) {
       setIsRevealed(true);
       onReveal();
     }
@@ -376,7 +377,13 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
 
     lastPoint.current = { x, y };
     spawnSparkles(x, y, 2);
-    checkReveal();
+
+    // Throttle checkReveal scan to run at most once every 130ms during drag moves (Guarantees zero-lag performance!)
+    const now = performance.now();
+    if (now - lastCheckTime.current > 130) {
+      checkReveal();
+      lastCheckTime.current = now;
+    }
   }, [isRevealed, cx, cy, radius, spawnSparkles, checkReveal]);
 
   // ── Input handlers ────────────────────────────────────────────
@@ -405,6 +412,7 @@ export function ScratchReveal({ onReveal, width = 220, height = 220 }: ScratchRe
   const handlePointerUp = () => {
     setIsDrawing(false);
     lastPoint.current = null;
+    checkReveal(); // Run one final precise check to ensure perfect opening when touch/click releases
   };
 
   // ── Custom Desktop Cursor Movement Handler ─────────────────────
