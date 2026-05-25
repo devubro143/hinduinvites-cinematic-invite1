@@ -4,6 +4,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export function Countdown() {
   const isReducedMotion = useReducedMotion();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -36,6 +37,14 @@ export function Countdown() {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClose = () => setDropdownOpen(false);
+    window.addEventListener("click", handleClose);
+    return () => window.removeEventListener("click", handleClose);
+  }, [dropdownOpen]);
 
   // 1. Dynamic Emotional Anticipation Engine (Strict Day States)
   const getAnticipationText = (days: number) => {
@@ -75,6 +84,67 @@ export function Countdown() {
         : 12,
     };
   }, [timeLeft.days]);
+
+  // ── Dynamic Prefilled Calendar URL Generators ─────────────────
+  const getGoogleCalendarUrl = () => {
+    const dateStr = wedding.weddingDate.replace(/-/g, ""); // e.g. "20260725"
+    const startDate = new Date(wedding.weddingDate);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 1);
+    const endDateStr = endDate.toISOString().split("T")[0].replace(/-/g, "");
+
+    const title = encodeURIComponent(`Wedding: ${wedding.brideName} & ${wedding.groomName}`);
+    const location = encodeURIComponent(`${wedding.venue || ""}, ${wedding.city || ""}`);
+    const description = encodeURIComponent(`Join us for the wedding celebration of ${wedding.brideName} and ${wedding.groomName}.\n\nTagline: ${wedding.tagline || ""}\nHashtag: ${wedding.hashtag || ""}\n\nCinematic Wedding Invitation: ${window.location.origin}`);
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}/${endDateStr}&details=${description}&location=${location}`;
+  };
+
+  const generateIcsFile = () => {
+    const dateStr = wedding.weddingDate.replace(/-/g, ""); // e.g. "20260725"
+    const startDate = new Date(wedding.weddingDate);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 1);
+    const endDateStr = endDate.toISOString().split("T")[0].replace(/-/g, "");
+
+    const title = `Wedding: ${wedding.brideName} & ${wedding.groomName}`;
+    const location = `${wedding.venue || ""}, ${wedding.city || ""}`;
+    const description = `Join us for the wedding celebration of ${wedding.brideName} and ${wedding.groomName}.\\n\\nTagline: ${wedding.tagline || ""}\\nHashtag: ${wedding.hashtag || ""}\\n\\nCinematic Wedding Invitation: ${window.location.origin}`;
+    
+    const icsLines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//HinduInvites//Wedding Calendar//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      `UID:wedding-${wedding.coupleId}-${dateStr}`,
+      `DTSTART;VALUE=DATE:${dateStr}`,
+      `DTEND;VALUE=DATE:${endDateStr}`,
+      `SUMMARY:${title}`,
+      `LOCATION:${location}`,
+      `DESCRIPTION:${description}`,
+      "STATUS:CONFIRMED",
+      "SEQUENCE:0",
+      "TRANSP:TRANSPARENT",
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ];
+
+    const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `wedding-${wedding.coupleId}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const toggleDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
     <section 
@@ -185,6 +255,59 @@ export function Countdown() {
             isSeconds={true}
             isFlip={!isReducedMotion}
           />
+        </div>
+
+        {/* 9. Premium Royal "Save The Wedding Date" CTA */}
+        <div className="mt-12 flex flex-col items-center justify-center relative z-30 animate-reveal delay-[700ms]">
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="px-6 py-2.5 rounded-full border border-marigold/30 bg-gradient-to-b from-white/5 to-black/85 text-[10px] uppercase tracking-[0.25em] text-premium-gold font-medium transition-all duration-700 shadow-[0_0_15px_rgba(232,192,122,0.06)] hover:border-marigold/60 hover:shadow-[0_0_25px_rgba(232,192,122,0.22)] active:scale-[0.98] cursor-pointer flex items-center gap-2 group overflow-hidden"
+            >
+              {/* Volumetric glossy shimmer light sweep on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[1500ms] ease-out pointer-events-none" />
+              
+              {/* Small glowing star icon */}
+              <span className="text-[10px] text-marigold animate-pulse">✦</span>
+              Save The Wedding Date
+              <span className="text-[8px] text-marigold group-hover:translate-y-0.5 transition-transform duration-300">
+                {dropdownOpen ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {/* Premium Gold Dropdown Selector */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 mt-3 w-52 rounded-xl border border-marigold/20 bg-black/90 backdrop-blur-md p-1.5 shadow-[0_10px_30px_-5px_rgba(8,3,10,0.95),0_0_20px_rgba(232,192,122,0.12)] transition-all duration-500 ease-out z-40 ${
+                dropdownOpen 
+                  ? "opacity-100 translate-y-0 scale-100 pointer-events-auto" 
+                  : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
+              }`}
+            >
+              <div className="absolute inset-1 rounded-[8px] border border-marigold/5 pointer-events-none" />
+
+              <a
+                href={getGoogleCalendarUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-wider text-ivory/80 hover:text-premium-gold hover:bg-white/5 transition-all duration-300 cursor-pointer"
+              >
+                <span className="text-marigold/70 text-xs">📅</span>
+                Google Calendar
+              </a>
+              
+              <button
+                onClick={() => {
+                  generateIcsFile();
+                  setDropdownOpen(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-wider text-ivory/80 hover:text-premium-gold hover:bg-white/5 transition-all duration-300 cursor-pointer text-left"
+              >
+                <span className="text-marigold/70 text-xs">🍎</span>
+                Apple / Outlook (.ics)
+              </button>
+            </div>
+          </div>
         </div>
 
         <p className="mt-16 text-[10px] italic tracking-widest text-marigold/60 animate-reveal delay-[800ms] select-none">
